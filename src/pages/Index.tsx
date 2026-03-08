@@ -98,8 +98,17 @@ const Index = () => {
         </div>
       )}
 
+      {/* Phase indicator */}
+      {phase.dayInCycle > 0 && (
+        <div className="mt-5 flex items-center gap-2 rounded-xl bg-accent/15 px-4 py-2.5 w-fit">
+          <span className="text-lg">{phase.emoji}</span>
+          <span className="text-sm font-medium text-foreground">{phase.name}</span>
+          <span className="text-xs text-muted-foreground">· Día {phase.dayInCycle}</span>
+        </div>
+      )}
+
       {/* Progress bar — full width above columns */}
-      <div className="mt-6">
+      <div className="mt-4">
         <PhaseCard phase={phase} completed={completed} description={pomodoroDesc} />
       </div>
 
