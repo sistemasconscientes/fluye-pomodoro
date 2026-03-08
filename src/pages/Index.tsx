@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { Settings } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import CircularTimer from "@/components/CircularTimer";
 import TimerControls from "@/components/TimerControls";
 import PhaseCard from "@/components/PhaseCard";
@@ -8,10 +9,13 @@ import CycleSetup from "@/components/CycleSetup";
 import HelpSection from "@/components/HelpSection";
 import Onboarding from "@/components/Onboarding";
 import TaskList from "@/components/TaskList";
+import WeeklyHistory from "@/components/WeeklyHistory";
 import PomodoroCompleteDialog from "@/components/PomodoroCompleteDialog";
 import { useTimer } from "@/hooks/useTimer";
 import { getCyclePhase, getDefaultPhase, type CyclePhase } from "@/lib/cycle";
 import { getLastPeriod, getCycleLength, getCompletedPomodoros, incrementPomodoros } from "@/lib/storage";
+import { recordPomodoro } from "@/lib/history";
+import { playCompletionSound } from "@/lib/sound";
 import { toast } from "sonner";
 
 const POMODORO_DESCRIPTIONS: Record<number, string> = {
@@ -29,6 +33,7 @@ const Index = () => {
   const [completed, setCompleted] = useState(getCompletedPomodoros());
   const [phase, setPhase] = useState<CyclePhase>(getDefaultPhase());
   const [showCompleteDialog, setShowCompleteDialog] = useState(false);
+  const [historyKey, setHistoryKey] = useState(0);
 
   const refreshPhase = useCallback(() => {
     const lastPeriod = getLastPeriod();
@@ -47,11 +52,14 @@ const Index = () => {
 
   const handleComplete = useCallback(() => {
     const newCount = incrementPomodoros();
+    recordPomodoro();
     setCompleted(newCount);
     setShowCompleteDialog(true);
+    setHistoryKey((k) => k + 1);
+    playCompletionSound();
   }, []);
 
-  const { timeLeft, totalTime, isRunning, play, pause, reset } = useTimer(handleComplete);
+  const { timeLeft, totalTime, isRunning, mode, play, pause, reset, skipBreak } = useTimer(handleComplete);
 
   if (!onboarded) {
     return (
@@ -84,23 +92,33 @@ const Index = () => {
       </div>
 
       {/* Setup panel */}
-      {showSetup && (
-        <div className="mt-5">
-          <CycleSetup
-            onSave={() => {
-              refreshPhase();
-              setShowSetup(false);
-              toast("✅ Configuración guardada");
-            }}
-          />
-        </div>
-      )}
+      <AnimatePresence>
+        {showSetup && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="mt-5 overflow-hidden"
+          >
+            <CycleSetup
+              onSave={() => {
+                refreshPhase();
+                setShowSetup(false);
+                toast("✅ Configuración guardada");
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Phase + Pomodoros — two columns */}
       <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Phase indicator */}
         {phase.dayInCycle > 0 ? (
-          <div className="flex items-center gap-3 rounded-2xl bg-accent/15 px-5 py-4">
+          <motion.div
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex items-center gap-3 rounded-2xl bg-accent/15 px-5 py-4"
+          >
             <span className="text-3xl">{phase.emoji}</span>
             <div>
               <h2 className="font-display text-xl text-foreground">{phase.name}</h2>
@@ -108,7 +126,7 @@ const Index = () => {
                 Día {phase.dayInCycle} · {phase.description}
               </p>
             </div>
-          </div>
+          </motion.div>
         ) : (
           <div className="flex items-center gap-3 rounded-2xl bg-secondary/50 px-5 py-4">
             <span className="text-3xl">{phase.emoji}</span>
@@ -119,35 +137,43 @@ const Index = () => {
           </div>
         )}
 
-        {/* Pomodoro progress */}
         <PhaseCard phase={phase} completed={completed} description={pomodoroDesc} />
       </div>
 
       {/* Three-column layout: Timer + Tasks + Recommendations */}
       <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6 flex-1">
-        {/* Timer column */}
         <div className="flex flex-col items-center justify-center gap-8">
-          <CircularTimer timeLeft={timeLeft} totalTime={totalTime} isRunning={isRunning} />
+          <CircularTimer timeLeft={timeLeft} totalTime={totalTime} isRunning={isRunning} mode={mode} />
           <TimerControls
             isRunning={isRunning}
+            mode={mode}
             onPlay={play}
             onPause={pause}
             onReset={reset}
+            onSkipBreak={skipBreak}
           />
         </div>
 
-        {/* Tasks column */}
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-4">
           <TaskList />
         </div>
 
-        {/* Recommendations column */}
         <div className="flex flex-col justify-center">
           <PhaseRecommendations phase={phase} />
         </div>
       </div>
 
-      {/* Help section — always visible at bottom */}
+      {/* Weekly History */}
+      <motion.div
+        key={historyKey}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mt-6"
+      >
+        <WeeklyHistory />
+      </motion.div>
+
+      {/* Help section */}
       <div className="mt-10">
         <HelpSection />
       </div>

@@ -1,12 +1,15 @@
 import { useMemo } from "react";
+import { motion } from "framer-motion";
+import type { TimerMode } from "@/hooks/useTimer";
 
 interface CircularTimerProps {
-  timeLeft: number; // seconds
-  totalTime: number; // seconds
+  timeLeft: number;
+  totalTime: number;
   isRunning: boolean;
+  mode: TimerMode;
 }
 
-const CircularTimer = ({ timeLeft, totalTime, isRunning }: CircularTimerProps) => {
+const CircularTimer = ({ timeLeft, totalTime, isRunning, mode }: CircularTimerProps) => {
   const size = 280;
   const strokeWidth = 8;
   const radius = (size - strokeWidth) / 2;
@@ -20,10 +23,24 @@ const CircularTimer = ({ timeLeft, totalTime, isRunning }: CircularTimerProps) =
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
+  const isBreak = mode !== "work";
+  const strokeColor = isBreak ? "hsl(var(--accent))" : "hsl(var(--primary))";
+
+  const statusText = isBreak
+    ? mode === "longBreak"
+      ? "descanso largo"
+      : "descanso corto"
+    : isRunning
+    ? "enfocándote"
+    : "lista para fluir";
+
   return (
-    <div className="relative flex items-center justify-center">
+    <motion.div
+      initial={{ scale: 0.95, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      className="relative flex items-center justify-center"
+    >
       <svg width={size} height={size} className="transform -rotate-90">
-        {/* Background circle */}
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -33,13 +50,12 @@ const CircularTimer = ({ timeLeft, totalTime, isRunning }: CircularTimerProps) =
           strokeWidth={strokeWidth}
           strokeLinecap="round"
         />
-        {/* Progress circle */}
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="hsl(var(--primary))"
+          stroke={strokeColor}
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeDasharray={circumference}
@@ -52,10 +68,10 @@ const CircularTimer = ({ timeLeft, totalTime, isRunning }: CircularTimerProps) =
           {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
         </span>
         <span className="mt-1 text-sm font-light text-muted-foreground">
-          {isRunning ? "enfocándote" : "lista para fluir"}
+          {statusText}
         </span>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
