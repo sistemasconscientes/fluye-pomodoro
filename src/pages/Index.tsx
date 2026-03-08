@@ -4,15 +4,19 @@ import CircularTimer from "@/components/CircularTimer";
 import TimerControls from "@/components/TimerControls";
 import PhaseCard from "@/components/PhaseCard";
 import CycleSetup from "@/components/CycleSetup";
+import EnergySelector from "@/components/EnergySelector";
+import HelpSection from "@/components/HelpSection";
 import { useTimer } from "@/hooks/useTimer";
 import { getCyclePhase, getDefaultPhase, type CyclePhase } from "@/lib/cycle";
 import { getLastPeriod, getCycleLength, getCompletedPomodoros, incrementPomodoros } from "@/lib/storage";
+import { getEnergyType, setEnergyType, type EnergyType } from "@/lib/energy";
 import { toast } from "sonner";
 
 const Index = () => {
   const [showSetup, setShowSetup] = useState(false);
   const [completed, setCompleted] = useState(getCompletedPomodoros());
   const [phase, setPhase] = useState<CyclePhase>(getDefaultPhase());
+  const [energy, setEnergy] = useState<EnergyType | null>(getEnergyType());
 
   const refreshPhase = useCallback(() => {
     const lastPeriod = getLastPeriod();
@@ -37,6 +41,12 @@ const Index = () => {
     });
   }, [phase.recommendedPomodoros]);
 
+  const handleEnergySelect = (type: EnergyType) => {
+    setEnergyType(type);
+    setEnergy(type);
+    toast("✨ Energía registrada");
+  };
+
   const { timeLeft, totalTime, isRunning, play, pause, reset } = useTimer(handleComplete);
 
   return (
@@ -44,13 +54,16 @@ const Index = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="font-display text-2xl text-foreground">Fluye</h1>
-        <button
-          onClick={() => setShowSetup(!showSetup)}
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-muted-foreground transition-colors hover:bg-secondary/80"
-          aria-label="Configuración"
-        >
-          <Settings size={18} />
-        </button>
+        <div className="flex items-center gap-2">
+          <HelpSection />
+          <button
+            onClick={() => setShowSetup(!showSetup)}
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-muted-foreground transition-colors hover:bg-secondary/80"
+            aria-label="Configuración"
+          >
+            <Settings size={18} />
+          </button>
+        </div>
       </div>
 
       {/* Setup panel */}
@@ -65,6 +78,11 @@ const Index = () => {
           />
         </div>
       )}
+
+      {/* Energy selector */}
+      <div className="mt-5">
+        <EnergySelector selected={energy} onSelect={handleEnergySelect} />
+      </div>
 
       {/* Timer */}
       <div className="mt-8 flex flex-1 flex-col items-center justify-center gap-8">
