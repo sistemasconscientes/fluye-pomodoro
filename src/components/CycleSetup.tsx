@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getLastPeriod, getCycleLength, setLastPeriod, setCycleLength } from "@/lib/storage";
+import { getLastPeriod, setLastPeriod } from "@/lib/storage";
 
 interface CycleSetupProps {
   onSave: () => void;
@@ -7,12 +7,10 @@ interface CycleSetupProps {
 
 const CycleSetup = ({ onSave }: CycleSetupProps) => {
   const [date, setDate] = useState(getLastPeriod() || "");
-  const [length, setLength] = useState(getCycleLength());
 
   const handleSave = () => {
     if (!date) return;
     setLastPeriod(date);
-    setCycleLength(length);
     onSave();
   };
 
@@ -32,20 +30,6 @@ const CycleSetup = ({ onSave }: CycleSetupProps) => {
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/30"
-          />
-        </div>
-
-        <div>
-          <label className="mb-1 block text-sm font-medium text-foreground">
-            Duración del ciclo (días)
-          </label>
-          <input
-            type="number"
-            min={21}
-            max={40}
-            value={length}
-            onChange={(e) => setLength(Number(e.target.value))}
             className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/30"
           />
         </div>
