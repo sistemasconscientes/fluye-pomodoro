@@ -7,6 +7,8 @@ import PhaseRecommendations from "@/components/PhaseRecommendations";
 import CycleSetup from "@/components/CycleSetup";
 import HelpSection from "@/components/HelpSection";
 import Onboarding from "@/components/Onboarding";
+import TaskList from "@/components/TaskList";
+import PomodoroCompleteDialog from "@/components/PomodoroCompleteDialog";
 import { useTimer } from "@/hooks/useTimer";
 import { getCyclePhase, getDefaultPhase, type CyclePhase } from "@/lib/cycle";
 import { getLastPeriod, getCycleLength, getCompletedPomodoros, incrementPomodoros } from "@/lib/storage";
@@ -26,6 +28,7 @@ const Index = () => {
   const [showSetup, setShowSetup] = useState(false);
   const [completed, setCompleted] = useState(getCompletedPomodoros());
   const [phase, setPhase] = useState<CyclePhase>(getDefaultPhase());
+  const [showCompleteDialog, setShowCompleteDialog] = useState(false);
 
   const refreshPhase = useCallback(() => {
     const lastPeriod = getLastPeriod();
@@ -45,10 +48,8 @@ const Index = () => {
   const handleComplete = useCallback(() => {
     const newCount = incrementPomodoros();
     setCompleted(newCount);
-    toast("🍅 ¡Pomodoro completado!", {
-      description: `Llevas ${newCount} de ${phase.recommendedPomodoros} hoy`,
-    });
-  }, [phase.recommendedPomodoros]);
+    setShowCompleteDialog(true);
+  }, []);
 
   const { timeLeft, totalTime, isRunning, play, pause, reset } = useTimer(handleComplete);
 
@@ -66,7 +67,7 @@ const Index = () => {
   const pomodoroDesc = POMODORO_DESCRIPTIONS[phase.recommendedPomodoros] || "Ajusta tu ritmo según cómo te sientas.";
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-4xl flex-col px-5 py-8">
+    <div className="mx-auto flex min-h-screen max-w-6xl flex-col px-5 py-8">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -95,22 +96,35 @@ const Index = () => {
         </div>
       )}
 
-      {/* Phase indicator */}
-      {phase.dayInCycle > 0 && (
-        <div className="mt-5 flex items-center gap-2 rounded-xl bg-accent/15 px-4 py-2.5 w-fit">
-          <span className="text-lg">{phase.emoji}</span>
-          <span className="text-sm font-medium text-foreground">{phase.name}</span>
-          <span className="text-xs text-muted-foreground">· Día {phase.dayInCycle}</span>
-        </div>
-      )}
+      {/* Phase + Pomodoros — two columns */}
+      <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Phase indicator */}
+        {phase.dayInCycle > 0 ? (
+          <div className="flex items-center gap-3 rounded-2xl bg-accent/15 px-5 py-4">
+            <span className="text-3xl">{phase.emoji}</span>
+            <div>
+              <h2 className="font-display text-xl text-foreground">{phase.name}</h2>
+              <p className="text-sm text-muted-foreground">
+                Día {phase.dayInCycle} · {phase.description}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center gap-3 rounded-2xl bg-secondary/50 px-5 py-4">
+            <span className="text-3xl">{phase.emoji}</span>
+            <div>
+              <h2 className="font-display text-xl text-foreground">{phase.name}</h2>
+              <p className="text-sm text-muted-foreground">{phase.description}</p>
+            </div>
+          </div>
+        )}
 
-      {/* Progress bar — full width above columns */}
-      <div className="mt-4">
+        {/* Pomodoro progress */}
         <PhaseCard phase={phase} completed={completed} description={pomodoroDesc} />
       </div>
 
-      {/* Two-column layout: Timer + Recommendations */}
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
+      {/* Three-column layout: Timer + Tasks + Recommendations */}
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6 flex-1">
         {/* Timer column */}
         <div className="flex flex-col items-center justify-center gap-8">
           <CircularTimer timeLeft={timeLeft} totalTime={totalTime} isRunning={isRunning} />
@@ -120,6 +134,11 @@ const Index = () => {
             onPause={pause}
             onReset={reset}
           />
+        </div>
+
+        {/* Tasks column */}
+        <div className="flex flex-col">
+          <TaskList />
         </div>
 
         {/* Recommendations column */}
@@ -132,6 +151,14 @@ const Index = () => {
       <div className="mt-10">
         <HelpSection />
       </div>
+
+      {/* Completion dialog */}
+      <PomodoroCompleteDialog
+        open={showCompleteDialog}
+        onClose={() => setShowCompleteDialog(false)}
+        completed={completed}
+        recommended={phase.recommendedPomodoros}
+      />
     </div>
   );
 };
