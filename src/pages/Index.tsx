@@ -70,13 +70,8 @@ const Index = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className="text-2xl">{phase.emoji}</span>
-          <div>
-            <h1 className="font-display text-2xl text-foreground">Fluye</h1>
-            {phase.dayInCycle > 0 && (
-              <span className="text-xs text-muted-foreground">{phase.name} · Día {phase.dayInCycle}</span>
-            )}
-          </div>
+          <span className="text-2xl">🏊‍♀️</span>
+          <h1 className="font-display text-2xl text-foreground">Fluye</h1>
         </div>
         <div className="flex items-center gap-2">
           <HelpSection />
@@ -103,8 +98,17 @@ const Index = () => {
         </div>
       )}
 
+      {/* Phase indicator */}
+      {phase.dayInCycle > 0 && (
+        <div className="mt-5 flex items-center gap-2 rounded-xl bg-accent/15 px-4 py-2.5 w-fit">
+          <span className="text-lg">{phase.emoji}</span>
+          <span className="text-sm font-medium text-foreground">{phase.name}</span>
+          <span className="text-xs text-muted-foreground">· Día {phase.dayInCycle}</span>
+        </div>
+      )}
+
       {/* Progress bar — full width above columns */}
-      <div className="mt-6">
+      <div className="mt-4">
         <PhaseCard phase={phase} completed={completed} description={pomodoroDesc} />
       </div>
 
