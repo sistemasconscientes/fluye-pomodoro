@@ -3,20 +3,22 @@ import { Settings } from "lucide-react";
 import CircularTimer from "@/components/CircularTimer";
 import TimerControls from "@/components/TimerControls";
 import PhaseCard from "@/components/PhaseCard";
+import PhaseRecommendations from "@/components/PhaseRecommendations";
 import CycleSetup from "@/components/CycleSetup";
-import EnergySelector from "@/components/EnergySelector";
 import HelpSection from "@/components/HelpSection";
+import Onboarding from "@/components/Onboarding";
 import { useTimer } from "@/hooks/useTimer";
 import { getCyclePhase, getDefaultPhase, type CyclePhase } from "@/lib/cycle";
 import { getLastPeriod, getCycleLength, getCompletedPomodoros, incrementPomodoros } from "@/lib/storage";
-import { getEnergyType, setEnergyType, type EnergyType } from "@/lib/energy";
 import { toast } from "sonner";
 
 const Index = () => {
+  const [onboarded, setOnboarded] = useState(
+    () => localStorage.getItem("fluye_onboarded") === "true"
+  );
   const [showSetup, setShowSetup] = useState(false);
   const [completed, setCompleted] = useState(getCompletedPomodoros());
   const [phase, setPhase] = useState<CyclePhase>(getDefaultPhase());
-  const [energy, setEnergy] = useState<EnergyType | null>(getEnergyType());
 
   const refreshPhase = useCallback(() => {
     const lastPeriod = getLastPeriod();
@@ -41,13 +43,18 @@ const Index = () => {
     });
   }, [phase.recommendedPomodoros]);
 
-  const handleEnergySelect = (type: EnergyType) => {
-    setEnergyType(type);
-    setEnergy(type);
-    toast("✨ Energía registrada");
-  };
-
   const { timeLeft, totalTime, isRunning, play, pause, reset } = useTimer(handleComplete);
+
+  if (!onboarded) {
+    return (
+      <Onboarding
+        onComplete={() => {
+          setOnboarded(true);
+          refreshPhase();
+        }}
+      />
+    );
+  }
 
   return (
     <div className="mx-auto flex min-h-screen max-w-md flex-col px-5 py-8">
@@ -73,16 +80,11 @@ const Index = () => {
             onSave={() => {
               refreshPhase();
               setShowSetup(false);
-              toast("✅ Ciclo actualizado");
+              toast("✅ Configuración guardada");
             }}
           />
         </div>
       )}
-
-      {/* Energy selector */}
-      <div className="mt-5">
-        <EnergySelector selected={energy} onSelect={handleEnergySelect} />
-      </div>
 
       {/* Timer */}
       <div className="mt-8 flex flex-1 flex-col items-center justify-center gap-8">
@@ -95,8 +97,13 @@ const Index = () => {
         />
       </div>
 
-      {/* Phase info */}
+      {/* Recommendations */}
       <div className="mt-8">
+        <PhaseRecommendations phase={phase} />
+      </div>
+
+      {/* Progress */}
+      <div className="mt-4">
         <PhaseCard phase={phase} completed={completed} />
       </div>
     </div>
