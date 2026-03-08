@@ -70,13 +70,8 @@ const Index = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className="text-2xl">{phase.emoji}</span>
-          <div>
-            <h1 className="font-display text-2xl text-foreground">Fluye</h1>
-            {phase.dayInCycle > 0 && (
-              <span className="text-xs text-muted-foreground">{phase.name} · Día {phase.dayInCycle}</span>
-            )}
-          </div>
+          <span className="text-2xl">🏊‍♀️</span>
+          <h1 className="font-display text-2xl text-foreground">Fluye</h1>
         </div>
         <div className="flex items-center gap-2">
           <HelpSection />
