@@ -14,12 +14,23 @@ const Footer = () => {
           Laboratorio de Sistemas Conscientes
         </a>
       </p>
-      <Link
-        to="/features"
-        className="mt-2 inline-block text-xs text-muted-foreground underline underline-offset-2 transition-colors hover:text-primary"
-      >
-        💡 Sugiere mejoras
-      </Link>
+      <div className="mt-2 flex items-center justify-center gap-3 text-xs text-muted-foreground">
+        <Link
+          to="/features"
+          className="underline underline-offset-2 transition-colors hover:text-primary"
+        >
+          💡 Sugiere mejoras
+        </Link>
+        <span>·</span>
+        <a
+          href="https://github.com/laboratorio-sistemas-conscientes/fluye"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-2 transition-colors hover:text-primary"
+        >
+          🍴 Fork en GitHub
+        </a>
+      </div>
     </footer>
   );
 };
