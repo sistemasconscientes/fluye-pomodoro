@@ -66,10 +66,18 @@ const Index = () => {
   const pomodoroDesc = POMODORO_DESCRIPTIONS[phase.recommendedPomodoros] || "Ajusta tu ritmo según cómo te sientas.";
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-md flex-col px-5 py-8">
+    <div className="mx-auto flex min-h-screen max-w-4xl flex-col px-5 py-8">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl text-foreground">Fluye</h1>
+        <div className="flex items-center gap-3">
+          <span className="text-2xl">{phase.emoji}</span>
+          <div>
+            <h1 className="font-display text-2xl text-foreground">Fluye</h1>
+            {phase.dayInCycle > 0 && (
+              <span className="text-xs text-muted-foreground">{phase.name} · Día {phase.dayInCycle}</span>
+            )}
+          </div>
+        </div>
         <div className="flex items-center gap-2">
           <HelpSection />
           <button
@@ -95,34 +103,28 @@ const Index = () => {
         </div>
       )}
 
-      {/* Phase Recommendations */}
+      {/* Progress bar — full width above columns */}
       <div className="mt-6">
-        <div className="flex items-center gap-3 mb-3">
-          <span className="text-3xl">{phase.emoji}</span>
-          <div>
-            <h2 className="font-display text-lg text-foreground">{phase.name}</h2>
-            {phase.dayInCycle > 0 && (
-              <span className="text-xs text-muted-foreground">Día {phase.dayInCycle}</span>
-            )}
-          </div>
-        </div>
-        <PhaseRecommendations phase={phase} />
-      </div>
-
-      {/* Progress */}
-      <div className="mt-4">
         <PhaseCard phase={phase} completed={completed} description={pomodoroDesc} />
       </div>
 
-      {/* Timer */}
-      <div className="mt-8 flex flex-1 flex-col items-center justify-center gap-8">
-        <CircularTimer timeLeft={timeLeft} totalTime={totalTime} isRunning={isRunning} />
-        <TimerControls
-          isRunning={isRunning}
-          onPlay={play}
-          onPause={pause}
-          onReset={reset}
-        />
+      {/* Two-column layout: Timer + Recommendations */}
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
+        {/* Timer column */}
+        <div className="flex flex-col items-center justify-center gap-8">
+          <CircularTimer timeLeft={timeLeft} totalTime={totalTime} isRunning={isRunning} />
+          <TimerControls
+            isRunning={isRunning}
+            onPlay={play}
+            onPause={pause}
+            onReset={reset}
+          />
+        </div>
+
+        {/* Recommendations column */}
+        <div className="flex flex-col justify-center">
+          <PhaseRecommendations phase={phase} />
+        </div>
       </div>
     </div>
   );
