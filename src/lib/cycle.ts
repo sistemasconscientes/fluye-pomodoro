@@ -19,11 +19,13 @@ const PHASE_BASE_POMODOROS: Record<string, number> = {
 };
 
 function resolvePomodoros(phaseName: string): number {
+  const phaseBase = PHASE_BASE_POMODOROS[phaseName] ?? 8;
   const feeling = getFeeling();
   if (feeling) {
-    return getFeelingPomodoros(feeling);
+    const feelingValue = getFeelingPomodoros(feeling);
+    return Math.round((phaseBase + feelingValue) / 2);
   }
-  return PHASE_BASE_POMODOROS[phaseName] ?? 8;
+  return phaseBase;
 }
 
 export function getCyclePhase(lastPeriodDate: string, cycleLength: number): CyclePhase {

@@ -28,7 +28,7 @@ export const FEELING_OPTIONS: FeelingOption[] = [
     label: "Media",
     emoji: "☁️",
     description: "Puedo hacer trabajo normal, con pomodoros estándar",
-    pomodoros: 8,
+    pomodoros: 7,
   },
   {
     level: "high",
