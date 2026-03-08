@@ -1,26 +1,26 @@
-import { ENERGY_OPTIONS, type EnergyType } from "@/lib/energy";
+import { FEELING_OPTIONS, type FeelingLevel } from "@/lib/feeling";
 
-interface EnergySelectorProps {
-  selected: EnergyType | null;
-  onSelect: (type: EnergyType) => void;
+interface FeelingSelectorProps {
+  selected: FeelingLevel | null;
+  onSelect: (level: FeelingLevel) => void;
 }
 
-const EnergySelector = ({ selected, onSelect }: EnergySelectorProps) => {
+const FeelingSelector = ({ selected, onSelect }: FeelingSelectorProps) => {
   return (
     <div className="rounded-2xl bg-secondary/50 p-5">
       <h2 className="font-display text-lg text-foreground">
-        ¿Qué tipo de energía sientes hoy?
+        ¿Cómo te sientes hoy para trabajar?
       </h2>
       <p className="mb-4 text-sm text-muted-foreground">
-        Esto nos ayuda a ajustar tus recomendaciones
+        Esto ajusta cuántos pomodoros te recomendamos
       </p>
       <div className="space-y-2">
-        {ENERGY_OPTIONS.map((option) => (
+        {FEELING_OPTIONS.map((option) => (
           <button
-            key={option.type}
-            onClick={() => onSelect(option.type)}
+            key={option.level}
+            onClick={() => onSelect(option.level)}
             className={`flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left transition-all ${
-              selected === option.type
+              selected === option.level
                 ? "border-primary bg-primary/10 ring-2 ring-primary/20"
                 : "border-border bg-background hover:border-primary/40"
             }`}
@@ -41,4 +41,4 @@ const EnergySelector = ({ selected, onSelect }: EnergySelectorProps) => {
   );
 };
 
-export default EnergySelector;
+export default FeelingSelector;

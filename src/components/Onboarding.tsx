@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Moon } from "lucide-react";
-import { setLastPeriod, setCycleLength } from "@/lib/storage";
-import { setEnergyType, type EnergyType } from "@/lib/energy";
-import EnergySelector from "@/components/EnergySelector";
+import { setLastPeriod, setRegularity, type CycleRegularity } from "@/lib/storage";
+import { setFeeling, type FeelingLevel } from "@/lib/feeling";
+import RegularitySelector from "@/components/RegularitySelector";
+import FeelingSelector from "@/components/FeelingSelector";
 
 interface OnboardingProps {
   onComplete: () => void;
@@ -10,8 +11,8 @@ interface OnboardingProps {
 
 const Onboarding = ({ onComplete }: OnboardingProps) => {
   const [date, setDate] = useState("");
-  const [length, setLength] = useState(28);
-  const [energy, setEnergy] = useState<EnergyType | null>(null);
+  const [regularity, setReg] = useState<CycleRegularity | null>(null);
+  const [feeling, setFeel] = useState<FeelingLevel | null>(null);
 
   const handleStart = () => {
     if (date) {
@@ -19,15 +20,15 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
     } else {
       setLastPeriod(new Date().toISOString().split("T")[0]);
     }
-    setCycleLength(length);
-    if (energy) setEnergyType(energy);
+    if (regularity) setRegularity(regularity);
+    if (feeling) setFeeling(feeling);
     localStorage.setItem("fluye_onboarded", "true");
     onComplete();
   };
 
   const handleSkip = () => {
     setLastPeriod(new Date().toISOString().split("T")[0]);
-    setCycleLength(28);
+    setRegularity("regular");
     localStorage.setItem("fluye_onboarded", "true");
     onComplete();
   };
@@ -57,23 +58,14 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
           />
         </div>
 
-        <div>
-          <label className="mb-1 block text-sm font-medium text-foreground">
-            Duración del ciclo (días)
-          </label>
-          <input
-            type="number"
-            min={21}
-            max={40}
-            value={length}
-            onChange={(e) => setLength(Number(e.target.value))}
-            className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/30"
-          />
-        </div>
+        <RegularitySelector
+          selected={regularity}
+          onSelect={(r) => setReg(r)}
+        />
 
-        <EnergySelector
-          selected={energy}
-          onSelect={(type) => setEnergy(type)}
+        <FeelingSelector
+          selected={feeling}
+          onSelect={(f) => setFeel(f)}
         />
 
         <button

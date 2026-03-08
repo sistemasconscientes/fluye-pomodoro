@@ -73,16 +73,13 @@ const Index = () => {
           <span className="text-2xl">🏊‍♀️</span>
           <h1 className="font-display text-2xl text-foreground">Fluye</h1>
         </div>
-        <div className="flex items-center gap-2">
-          <HelpSection />
-          <button
-            onClick={() => setShowSetup(!showSetup)}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-muted-foreground transition-colors hover:bg-secondary/80"
-            aria-label="Configuración"
-          >
-            <Settings size={18} />
-          </button>
-        </div>
+        <button
+          onClick={() => setShowSetup(!showSetup)}
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-muted-foreground transition-colors hover:bg-secondary/80"
+          aria-label="Configuración"
+        >
+          <Settings size={18} />
+        </button>
       </div>
 
       {/* Setup panel */}
@@ -129,6 +126,11 @@ const Index = () => {
         <div className="flex flex-col justify-center">
           <PhaseRecommendations phase={phase} />
         </div>
+      </div>
+
+      {/* Help section — always visible at bottom */}
+      <div className="mt-10">
+        <HelpSection />
       </div>
     </div>
   );
