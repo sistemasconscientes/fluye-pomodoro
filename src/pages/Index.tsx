@@ -8,6 +8,7 @@ import PhaseRecommendations from "@/components/PhaseRecommendations";
 import CycleSetup from "@/components/CycleSetup";
 import HelpSection from "@/components/HelpSection";
 import Onboarding from "@/components/Onboarding";
+import Footer from "@/components/Footer";
 import TaskList from "@/components/TaskList";
 import WeeklyHistory from "@/components/WeeklyHistory";
 import PomodoroCompleteDialog from "@/components/PomodoroCompleteDialog";
@@ -177,6 +178,9 @@ const Index = () => {
       <div className="mt-10">
         <HelpSection />
       </div>
+
+      {/* Footer */}
+      <Footer />
 
       {/* Completion dialog */}
       <PomodoroCompleteDialog
