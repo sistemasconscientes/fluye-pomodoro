@@ -1,3 +1,5 @@
+import { getFeeling, getFeelingPomodoros } from "@/lib/feeling";
+
 export interface CyclePhase {
   name: string;
   emoji: string;
@@ -7,7 +9,22 @@ export interface CyclePhase {
   description: string;
 }
 
-const MENSTRUATION_POMODOROS = [4, 4, 6, 6, 8];
+const PHASE_BASE_POMODOROS: Record<string, number> = {
+  "Menstruación": 4,
+  "Folicular": 8,
+  "Ovulación": 10,
+  "Lútea temprana": 10,
+  "Lútea media": 8,
+  "Lútea tardía": 6,
+};
+
+function resolvePomodoros(phaseName: string): number {
+  const feeling = getFeeling();
+  if (feeling) {
+    return getFeelingPomodoros(feeling);
+  }
+  return PHASE_BASE_POMODOROS[phaseName] ?? 8;
+}
 
 export function getCyclePhase(lastPeriodDate: string, cycleLength: number): CyclePhase {
   const today = new Date();
@@ -24,7 +41,7 @@ export function getCyclePhase(lastPeriodDate: string, cycleLength: number): Cycl
       name: "Menstruación",
       emoji: "🌙",
       daysRemaining: 5 - dayInCycle,
-      recommendedPomodoros: MENSTRUATION_POMODOROS[dayInCycle - 1],
+      recommendedPomodoros: resolvePomodoros("Menstruación"),
       dayInCycle,
       description: "Descansa y sé amable contigo",
     };
@@ -35,7 +52,7 @@ export function getCyclePhase(lastPeriodDate: string, cycleLength: number): Cycl
       name: "Folicular",
       emoji: "🌱",
       daysRemaining: 13 - dayInCycle,
-      recommendedPomodoros: 8,
+      recommendedPomodoros: resolvePomodoros("Folicular"),
       dayInCycle,
       description: "Tu energía crece, aprovéchala",
     };
@@ -46,7 +63,7 @@ export function getCyclePhase(lastPeriodDate: string, cycleLength: number): Cycl
       name: "Ovulación",
       emoji: "🌸",
       daysRemaining: 16 - dayInCycle,
-      recommendedPomodoros: 10,
+      recommendedPomodoros: resolvePomodoros("Ovulación"),
       dayInCycle,
       description: "Máxima energía y claridad mental",
     };
@@ -57,7 +74,7 @@ export function getCyclePhase(lastPeriodDate: string, cycleLength: number): Cycl
       name: "Lútea temprana",
       emoji: "🍂",
       daysRemaining: 21 - dayInCycle,
-      recommendedPomodoros: 10,
+      recommendedPomodoros: resolvePomodoros("Lútea temprana"),
       dayInCycle,
       description: "Aún con buena energía, organiza",
     };
@@ -68,29 +85,29 @@ export function getCyclePhase(lastPeriodDate: string, cycleLength: number): Cycl
       name: "Lútea media",
       emoji: "🌾",
       daysRemaining: 25 - dayInCycle,
-      recommendedPomodoros: 8,
+      recommendedPomodoros: resolvePomodoros("Lútea media"),
       dayInCycle,
       description: "Empieza a bajar el ritmo",
     };
   }
 
-  // Days 26 to cycleLength
   return {
     name: "Lútea tardía",
     emoji: "🕯️",
     daysRemaining: cycleLength - dayInCycle,
-    recommendedPomodoros: 6,
+    recommendedPomodoros: resolvePomodoros("Lútea tardía"),
     dayInCycle,
     description: "Prioriza lo esencial, descansa",
   };
 }
 
 export function getDefaultPhase(): CyclePhase {
+  const feeling = getFeeling();
   return {
     name: "Sin datos",
     emoji: "✨",
     daysRemaining: 0,
-    recommendedPomodoros: 8,
+    recommendedPomodoros: feeling ? getFeelingPomodoros(feeling) : 8,
     dayInCycle: 0,
     description: "Configura tu ciclo para personalizar",
   };

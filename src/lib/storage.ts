@@ -1,8 +1,17 @@
 const KEYS = {
   LAST_PERIOD: "fluye_last_period",
   CYCLE_LENGTH: "fluye_cycle_length",
+  REGULARITY: "fluye_regularity",
   POMODOROS_TODAY: "fluye_pomodoros_today",
   POMODOROS_DATE: "fluye_pomodoros_date",
+};
+
+export type CycleRegularity = "regular" | "irregular" | "none";
+
+const REGULARITY_CYCLE_LENGTHS: Record<CycleRegularity, number> = {
+  regular: 28,
+  irregular: 32,
+  none: 28,
 };
 
 export function getLastPeriod(): string | null {
@@ -20,6 +29,16 @@ export function getCycleLength(): number {
 
 export function setCycleLength(length: number) {
   localStorage.setItem(KEYS.CYCLE_LENGTH, String(length));
+}
+
+export function getRegularity(): CycleRegularity | null {
+  const val = localStorage.getItem(KEYS.REGULARITY);
+  return val as CycleRegularity | null;
+}
+
+export function setRegularity(regularity: CycleRegularity) {
+  localStorage.setItem(KEYS.REGULARITY, regularity);
+  setCycleLength(REGULARITY_CYCLE_LENGTHS[regularity]);
 }
 
 export function getCompletedPomodoros(): number {

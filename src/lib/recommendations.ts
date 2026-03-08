@@ -97,7 +97,7 @@ const PHASE_RECOMMENDATIONS: Record<string, PhaseRecommendation> = {
     tips: [
       "Usa el ícono ⚙️ para configurar",
       "Ingresa tu fecha de última menstruación",
-      "Elige tu tipo de energía del día",
+      "Indica cómo te sientes hoy",
     ],
     nutritionTips: [],
     bgClass: "bg-secondary/50",
