@@ -23,7 +23,7 @@ const Footer = () => {
         </Link>
         <span>·</span>
         <a
-          href="https://github.com/laboratorio-sistemas-conscientes/fluye"
+          href="https://github.com/sistemasconscientes/fluye-pomodoro"
           target="_blank"
           rel="noopener noreferrer"
           className="underline underline-offset-2 transition-colors hover:text-primary"
