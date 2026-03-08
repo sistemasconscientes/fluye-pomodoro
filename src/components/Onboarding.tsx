@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Moon } from "lucide-react";
 import { setLastPeriod, setCycleLength } from "@/lib/storage";
+import { setEnergyType, type EnergyType } from "@/lib/energy";
+import EnergySelector from "@/components/EnergySelector";
 
 interface OnboardingProps {
   onComplete: () => void;
@@ -9,6 +11,7 @@ interface OnboardingProps {
 const Onboarding = ({ onComplete }: OnboardingProps) => {
   const [date, setDate] = useState("");
   const [length, setLength] = useState(28);
+  const [energy, setEnergy] = useState<EnergyType | null>(null);
 
   const handleStart = () => {
     if (date) {
@@ -17,6 +20,7 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
       setLastPeriod(new Date().toISOString().split("T")[0]);
     }
     setCycleLength(length);
+    if (energy) setEnergyType(energy);
     localStorage.setItem("fluye_onboarded", "true");
     onComplete();
   };
@@ -66,6 +70,11 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
             className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/30"
           />
         </div>
+
+        <EnergySelector
+          selected={energy}
+          onSelect={(type) => setEnergy(type)}
+        />
 
         <button
           onClick={handleStart}

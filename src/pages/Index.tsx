@@ -12,6 +12,13 @@ import { getCyclePhase, getDefaultPhase, type CyclePhase } from "@/lib/cycle";
 import { getLastPeriod, getCycleLength, getCompletedPomodoros, incrementPomodoros } from "@/lib/storage";
 import { toast } from "sonner";
 
+const POMODORO_DESCRIPTIONS: Record<number, string> = {
+  4: "Tu cuerpo necesita descanso. Menos sesiones, más cuidado.",
+  6: "Energía moderada. Avanza sin forzar.",
+  8: "Buen balance entre productividad y descanso.",
+  10: "Estás en tu pico de energía. ¡Aprovecha al máximo!",
+};
+
 const Index = () => {
   const [onboarded, setOnboarded] = useState(
     () => localStorage.getItem("fluye_onboarded") === "true"
@@ -56,6 +63,8 @@ const Index = () => {
     );
   }
 
+  const pomodoroDesc = POMODORO_DESCRIPTIONS[phase.recommendedPomodoros] || "Ajusta tu ritmo según cómo te sientas.";
+
   return (
     <div className="mx-auto flex min-h-screen max-w-md flex-col px-5 py-8">
       {/* Header */}
@@ -86,6 +95,25 @@ const Index = () => {
         </div>
       )}
 
+      {/* Phase Recommendations */}
+      <div className="mt-6">
+        <div className="flex items-center gap-3 mb-3">
+          <span className="text-3xl">{phase.emoji}</span>
+          <div>
+            <h2 className="font-display text-lg text-foreground">{phase.name}</h2>
+            {phase.dayInCycle > 0 && (
+              <span className="text-xs text-muted-foreground">Día {phase.dayInCycle}</span>
+            )}
+          </div>
+        </div>
+        <PhaseRecommendations phase={phase} />
+      </div>
+
+      {/* Progress */}
+      <div className="mt-4">
+        <PhaseCard phase={phase} completed={completed} description={pomodoroDesc} />
+      </div>
+
       {/* Timer */}
       <div className="mt-8 flex flex-1 flex-col items-center justify-center gap-8">
         <CircularTimer timeLeft={timeLeft} totalTime={totalTime} isRunning={isRunning} />
@@ -95,16 +123,6 @@ const Index = () => {
           onPause={pause}
           onReset={reset}
         />
-      </div>
-
-      {/* Recommendations */}
-      <div className="mt-8">
-        <PhaseRecommendations phase={phase} />
-      </div>
-
-      {/* Progress */}
-      <div className="mt-4">
-        <PhaseCard phase={phase} completed={completed} />
       </div>
     </div>
   );

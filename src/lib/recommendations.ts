@@ -3,6 +3,7 @@ import type { CyclePhase } from "@/lib/cycle";
 export interface PhaseRecommendation {
   phrase: string;
   tips: string[];
+  nutritionTips: string[];
   bgClass: string;
 }
 
@@ -14,6 +15,11 @@ const PHASE_RECOMMENDATIONS: Record<string, PhaseRecommendation> = {
       "Revisión y organización de archivos",
       "Journaling o reflexión personal",
     ],
+    nutritionTips: [
+      "🩸 Hierro + magnesio",
+      "Espinacas, chocolate amargo, lentejas",
+      "Semillas de girasol",
+    ],
     bgClass: "bg-[hsl(14,67%,62%,0.12)]",
   },
   "Folicular": {
@@ -22,6 +28,11 @@ const PHASE_RECOMMENDATIONS: Record<string, PhaseRecommendation> = {
       "Planificación estratégica y brainstorming",
       "Aprender algo nuevo o tomar cursos",
       "Iniciar proyectos creativos",
+    ],
+    nutritionTips: [
+      "🌱 Frescos + ligeros",
+      "Cítricos, brócoli, avena, germinados",
+      "Yogurt natural",
     ],
     bgClass: "bg-[hsl(100,19%,61%,0.15)]",
   },
@@ -32,6 +43,11 @@ const PHASE_RECOMMENDATIONS: Record<string, PhaseRecommendation> = {
       "Networking y colaboración",
       "Tareas que requieren liderazgo",
     ],
+    nutritionTips: [
+      "✨ Máxima energía",
+      "Aguacate, quinoa, matcha, frutos rojos",
+      "Almendras",
+    ],
     bgClass: "bg-[hsl(40,80%,65%,0.15)]",
   },
   "Lútea temprana": {
@@ -40,6 +56,11 @@ const PHASE_RECOMMENDATIONS: Record<string, PhaseRecommendation> = {
       "Revisión de proyectos en curso",
       "Trabajo detallado y de precisión",
       "Documentación y seguimiento",
+    ],
+    nutritionTips: [
+      "🍂 Estabilizantes",
+      "Camote, plátano, manzanilla",
+      "Nueces, arroz integral",
     ],
     bgClass: "bg-[hsl(30,50%,60%,0.15)]",
   },
@@ -50,6 +71,11 @@ const PHASE_RECOMMENDATIONS: Record<string, PhaseRecommendation> = {
       "Organizar y priorizar la semana",
       "Tareas administrativas ligeras",
     ],
+    nutritionTips: [
+      "🍂 Estabilizantes",
+      "Camote, plátano, manzanilla",
+      "Nueces, arroz integral",
+    ],
     bgClass: "bg-[hsl(35,40%,55%,0.12)]",
   },
   "Lútea tardía": {
@@ -58,6 +84,11 @@ const PHASE_RECOMMENDATIONS: Record<string, PhaseRecommendation> = {
       "Tareas cortas y predecibles",
       "Limpieza de inbox y pendientes",
       "Autocuidado y pausas frecuentes",
+    ],
+    nutritionTips: [
+      "🍂 Estabilizantes",
+      "Camote, plátano, manzanilla",
+      "Nueces, arroz integral",
     ],
     bgClass: "bg-[hsl(25,30%,60%,0.12)]",
   },
@@ -68,6 +99,7 @@ const PHASE_RECOMMENDATIONS: Record<string, PhaseRecommendation> = {
       "Ingresa tu fecha de última menstruación",
       "Elige tu tipo de energía del día",
     ],
+    nutritionTips: [],
     bgClass: "bg-secondary/50",
   },
 };
