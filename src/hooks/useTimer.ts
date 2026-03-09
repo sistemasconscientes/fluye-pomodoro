@@ -50,32 +50,36 @@ export function useTimer(onWorkComplete: () => void) {
     setTimeLeft(WORK_SECONDS);
   }, [clearTimer]);
 
+  // Handle timer completion separately
+  const handleTimerEnd = useCallback(() => {
+    clearTimer();
+    setIsRunning(false);
+
+    if (mode === "work") {
+      const newCount = sessionCount + 1;
+      setSessionCount(newCount);
+      onWorkComplete();
+
+      if (newCount % 4 === 0) {
+        setMode("longBreak");
+        setTimeLeft(LONG_BREAK_SECONDS);
+      } else {
+        setMode("shortBreak");
+        setTimeLeft(SHORT_BREAK_SECONDS);
+      }
+    } else {
+      setMode("work");
+      setTimeLeft(WORK_SECONDS);
+    }
+  }, [clearTimer, mode, sessionCount, onWorkComplete]);
+
   useEffect(() => {
     if (isRunning) {
       intervalRef.current = setInterval(() => {
         setTimeLeft((prev) => {
           if (prev <= 1) {
-            clearTimer();
-            setIsRunning(false);
-
-            if (mode === "work") {
-              const newCount = sessionCount + 1;
-              setSessionCount(newCount);
-              onWorkComplete();
-
-              // Every 4th session → long break, else short break
-              if (newCount % 4 === 0) {
-                setMode("longBreak");
-                setTimeLeft(LONG_BREAK_SECONDS);
-              } else {
-                setMode("shortBreak");
-                setTimeLeft(SHORT_BREAK_SECONDS);
-              }
-            } else {
-              // Break finished → back to work
-              setMode("work");
-              setTimeLeft(WORK_SECONDS);
-            }
+            // Schedule completion for next tick to avoid nested setState
+            setTimeout(handleTimerEnd, 0);
             return 0;
           }
           return prev - 1;
@@ -83,7 +87,7 @@ export function useTimer(onWorkComplete: () => void) {
       }, 1000);
     }
     return clearTimer;
-  }, [isRunning, clearTimer, onWorkComplete, mode, sessionCount]);
+  }, [isRunning, clearTimer, handleTimerEnd]);
 
   return {
     timeLeft,
