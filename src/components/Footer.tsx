@@ -14,7 +14,7 @@ const Footer = () => {
           Laboratorio de Sistemas Conscientes
         </a>
       </p>
-      <div className="mt-2 flex items-center justify-center gap-3 text-xs text-muted-foreground">
+      <div className="mt-2 flex items-center justify-center gap-3 text-xs text-muted-foreground flex-wrap">
         <Link
           to="/features"
           className="underline underline-offset-2 transition-colors hover:text-primary"
@@ -29,6 +29,15 @@ const Footer = () => {
           className="underline underline-offset-2 transition-colors hover:text-primary"
         >
           🍴 Fork en GitHub
+        </a>
+        <span>·</span>
+        <a
+          href="https://donate.stripe.com/4gMeVd0yzeBv7yt6Eufw400"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-2 transition-colors hover:text-primary"
+        >
+          ☕ Cómprame un café
         </a>
       </div>
     </footer>
