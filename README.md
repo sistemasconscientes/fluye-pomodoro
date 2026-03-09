@@ -1,73 +1,89 @@
-# Welcome to your Lovable project
+# 🏊‍♀️ Fluye — Pomodoro consciente
 
-## Project info
+Temporizador Pomodoro que adapta tu productividad a las fases de tu ciclo menstrual. Menos hustle, más fluir.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+[![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Lovable](https://img.shields.io/badge/built%20with-Lovable-ff69b4)](https://lovable.dev)
 
-## How can I edit this code?
+## ✨ Características
 
-There are several ways of editing your application.
+- **Temporizador Pomodoro** — Ciclos de 25 min de trabajo + descansos automáticos (5 min cortos, 15 min largos cada 4 sesiones)
+- **Fases del ciclo** — Detecta automáticamente tu fase (Menstruación → Folicular → Ovulación → Lútea) y ajusta la meta diaria de pomodoros
+- **Nivel de energía** — Ajusta tus pomodoros recomendados según cómo te sientes hoy
+- **Historial semanal** — Visualiza tu progreso de los últimos 7 días
+- **Lista de tareas** — Organiza qué hacer en cada sesión
+- **Sonido de completación** — Notificación sonora con tres tonos al terminar cada pomodoro
+- **PWA** — Instalable como app en tu dispositivo
+- **100% privado** — Todos los datos se guardan en localStorage, nada sale de tu navegador
 
-**Use Lovable**
+## 🧮 Lógica de pomodoros recomendados
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+El objetivo diario se calcula así:
 
-Changes made via Lovable will be committed automatically to this repo.
+```
+recomendados = redondear((base_fase + valor_energía) / 2)
+```
 
-**Use your preferred IDE**
+| Fase | Base |
+|------|------|
+| Menstruación | 4 |
+| Folicular | 8 |
+| Ovulación | 10 |
+| Lútea temprana | 10 |
+| Lútea media | 8 |
+| Lútea tardía | 6 |
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+| Energía | Valor |
+|---------|-------|
+| Bajísima | 4 |
+| Baja | 6 |
+| Media | 7 |
+| Alta | 8 |
+| Muy alta | 10 |
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Si no se selecciona energía, se usa el valor base de la fase.
 
-Follow these steps:
+## 🛠️ Stack tecnológico
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- **React 18** + TypeScript
+- **Vite** — Build tool
+- **Tailwind CSS** + shadcn/ui — Diseño
+- **Framer Motion** — Animaciones
+- **Web Audio API** — Sonido de completación
+- **localStorage** — Persistencia de datos
+- **vite-plugin-pwa** — Soporte offline
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## 🚀 Desarrollo local
 
-# Step 3: Install the necessary dependencies.
-npm i
+```bash
+# Clonar el repositorio
+git clone https://github.com/sistemasconscientes/fluye-pomodoro.git
+cd fluye-pomodoro
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Instalar dependencias
+npm install
+
+# Iniciar servidor de desarrollo
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## 🤝 Contribuir
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+1. Revisa los [issues abiertos](https://github.com/sistemasconscientes/fluye-pomodoro/issues)
+2. Sigue el [Kanban del proyecto](https://github.com/orgs/sistemasconscientes/projects/5)
+3. Usa [Conventional Commits](https://www.conventionalcommits.org/) para tus mensajes
+4. Abre un Pull Request
 
-**Use GitHub Codespaces**
+Consulta [CONTRIBUTING.md](CONTRIBUTING.md) y el [Código de Conducta](CODE_OF_CONDUCT.md) para más detalles.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## ☕ Apoya el proyecto
 
-## What technologies are used for this project?
+Si Fluye te es útil, puedes [invitarme un café](https://donate.stripe.com/4gMeVd0yzeBv7yt6Eufw400).
 
-This project is built with:
+## 📄 Licencia
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+[MIT](LICENSE) — Laboratorio de Sistemas Conscientes
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Una creación de [Laboratorio de Sistemas Conscientes](https://sistemasconscientes.com?ref=fluye)
