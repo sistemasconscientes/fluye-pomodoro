@@ -37,7 +37,7 @@ const Footer = () => {
           rel="noopener noreferrer"
           className="underline underline-offset-2 transition-colors hover:text-primary"
         >
-          ☕ Cómprame un café
+          ☕ Regálame un café
         </a>
       </div>
     </footer>
