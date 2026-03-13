@@ -37,6 +37,11 @@ const Index = () => {
   const [historyKey, setHistoryKey] = useState(0);
 
   const refreshPhase = useCallback(() => {
+    const menstruates = getMenstruates();
+    if (menstruates === false) {
+      setPhase(getDefaultPhase());
+      return;
+    }
     const lastPeriod = getLastPeriod();
     const cycleLength = getCycleLength();
     if (lastPeriod) {
