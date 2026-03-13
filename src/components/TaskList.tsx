@@ -11,13 +11,6 @@ const STORAGE_KEY = "fluye_tasks";
 const STORAGE_DATE_KEY = "fluye_tasks_date";
 
 function loadTasks(): Task[] {
-  const today = new Date().toISOString().split("T")[0];
-  const savedDate = localStorage.getItem(STORAGE_DATE_KEY);
-  if (savedDate !== today) {
-    localStorage.setItem(STORAGE_DATE_KEY, today);
-    localStorage.setItem(STORAGE_KEY, "[]");
-    return [];
-  }
   try {
     return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
   } catch {
@@ -26,8 +19,6 @@ function loadTasks(): Task[] {
 }
 
 function saveTasks(tasks: Task[]) {
-  const today = new Date().toISOString().split("T")[0];
-  localStorage.setItem(STORAGE_DATE_KEY, today);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
 }
 

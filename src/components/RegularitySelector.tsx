@@ -18,12 +18,6 @@ const OPTIONS: { value: CycleRegularity; label: string; emoji: string; descripti
     emoji: "🌀",
     description: "Mi ciclo varía bastante de mes a mes",
   },
-  {
-    value: "none",
-    label: "No menstrúo",
-    emoji: "✨",
-    description: "Anticonceptivos, menopausia u otra razón",
-  },
 ];
 
 const RegularitySelector = ({ selected, onSelect }: RegularitySelectorProps) => {

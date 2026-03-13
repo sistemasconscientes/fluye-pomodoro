@@ -106,11 +106,11 @@ export function getCyclePhase(lastPeriodDate: string, cycleLength: number): Cycl
 export function getDefaultPhase(): CyclePhase {
   const feeling = getFeeling();
   return {
-    name: "Sin datos",
+    name: "Tu ritmo",
     emoji: "✨",
     daysRemaining: 0,
     recommendedPomodoros: feeling ? getFeelingPomodoros(feeling) : 8,
     dayInCycle: 0,
-    description: "Configura tu ciclo para personalizar",
+    description: feeling ? "Basado en tu energía de hoy" : "Configura cómo te sientes para personalizar",
   };
 }
