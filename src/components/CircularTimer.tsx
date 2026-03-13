@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import type { TimerMode } from "@/hooks/useTimer";
+import { useI18n } from "@/lib/i18n";
 
 interface CircularTimerProps {
   timeLeft: number;
@@ -10,6 +11,7 @@ interface CircularTimerProps {
 }
 
 const CircularTimer = ({ timeLeft, totalTime, isRunning, mode }: CircularTimerProps) => {
+  const { t } = useI18n();
   const size = 280;
   const strokeWidth = 8;
   const radius = (size - strokeWidth) / 2;
@@ -28,11 +30,11 @@ const CircularTimer = ({ timeLeft, totalTime, isRunning, mode }: CircularTimerPr
 
   const statusText = isBreak
     ? mode === "longBreak"
-      ? "descanso largo"
-      : "descanso corto"
+      ? t("timer.longBreak")
+      : t("timer.shortBreak")
     : isRunning
-    ? "enfocándote"
-    : "lista para fluir";
+    ? t("timer.focusing")
+    : t("timer.ready");
 
   return (
     <motion.div
@@ -41,27 +43,8 @@ const CircularTimer = ({ timeLeft, totalTime, isRunning, mode }: CircularTimerPr
       className="relative flex items-center justify-center"
     >
       <svg width={size} height={size} className="transform -rotate-90">
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          fill="none"
-          stroke="hsl(var(--secondary))"
-          strokeWidth={strokeWidth}
-          strokeLinecap="round"
-        />
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          fill="none"
-          stroke={strokeColor}
-          strokeWidth={strokeWidth}
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          strokeDashoffset={circumference - progress}
-          className="transition-all duration-1000 ease-linear"
-        />
+        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="hsl(var(--secondary))" strokeWidth={strokeWidth} strokeLinecap="round" />
+        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={strokeColor} strokeWidth={strokeWidth} strokeLinecap="round" strokeDasharray={circumference} strokeDashoffset={circumference - progress} className="transition-all duration-1000 ease-linear" />
       </svg>
       <div className="absolute flex flex-col items-center justify-center">
         <span className={`font-display text-6xl tracking-tight text-foreground ${isRunning ? "animate-pulse-soft" : ""}`}>

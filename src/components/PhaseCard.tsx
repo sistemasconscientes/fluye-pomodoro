@@ -1,4 +1,5 @@
 import type { CyclePhase } from "@/lib/cycle";
+import { useI18n } from "@/lib/i18n";
 
 interface PhaseCardProps {
   phase: CyclePhase;
@@ -7,12 +8,13 @@ interface PhaseCardProps {
 }
 
 const PhaseCard = ({ phase, completed, description }: PhaseCardProps) => {
+  const { t } = useI18n();
   const progressPercent = Math.min((completed / phase.recommendedPomodoros) * 100, 100);
 
   return (
     <div className="rounded-2xl bg-secondary/50 p-5">
       <div className="flex items-center justify-between text-sm">
-        <span className="text-muted-foreground">Pomodoros hoy</span>
+        <span className="text-muted-foreground">{t("phase.pomodorosToday")}</span>
         <span className="font-medium text-foreground">
           {completed} / {phase.recommendedPomodoros}
         </span>
@@ -28,7 +30,10 @@ const PhaseCard = ({ phase, completed, description }: PhaseCardProps) => {
       </div>
       {phase.daysRemaining > 0 && (
         <p className="mt-2 text-xs text-muted-foreground">
-          {phase.daysRemaining} día{phase.daysRemaining > 1 ? "s" : ""} restante{phase.daysRemaining > 1 ? "s" : ""} en esta fase
+          {t("phase.daysRemaining", {
+            count: phase.daysRemaining,
+            plural: phase.daysRemaining > 1 ? "s" : "",
+          })}
         </p>
       )}
     </div>

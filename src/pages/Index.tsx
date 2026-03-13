@@ -12,21 +12,17 @@ import Footer from "@/components/Footer";
 import TaskList from "@/components/TaskList";
 import WeeklyHistory from "@/components/WeeklyHistory";
 import PomodoroCompleteDialog from "@/components/PomodoroCompleteDialog";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useTimer } from "@/hooks/useTimer";
 import { getCyclePhase, getDefaultPhase, type CyclePhase } from "@/lib/cycle";
 import { getLastPeriod, getCycleLength, getCompletedPomodoros, incrementPomodoros, getMenstruates } from "@/lib/storage";
 import { recordPomodoro } from "@/lib/history";
 import { playCompletionSound } from "@/lib/sound";
+import { useI18n, PHASE_KEY_MAP } from "@/lib/i18n";
 import { toast } from "sonner";
 
-const POMODORO_DESCRIPTIONS: Record<number, string> = {
-  4: "Tu cuerpo necesita descanso. Menos sesiones, más cuidado.",
-  6: "Energía moderada. Avanza sin forzar.",
-  8: "Buen balance entre productividad y descanso.",
-  10: "Estás en tu pico de energía. ¡Aprovecha al máximo!",
-};
-
 const Index = () => {
+  const { t } = useI18n();
   const [onboarded, setOnboarded] = useState(
     () => localStorage.getItem("fluye_onboarded") === "true"
   );
@@ -78,7 +74,14 @@ const Index = () => {
     );
   }
 
-  const pomodoroDesc = POMODORO_DESCRIPTIONS[phase.recommendedPomodoros] || "Ajusta tu ritmo según cómo te sientas.";
+  // Get translated phase name and description
+  const phaseKey = PHASE_KEY_MAP[phase.name];
+  const phaseName = phaseKey ? t(`phase.${phaseKey}`) : phase.name;
+  const phaseDesc = phaseKey ? t(`phase.${phaseKey}.desc`) : phase.description;
+
+  const pomodoroDesc = t(`pomodoro.desc.${phase.recommendedPomodoros}`, {}) !== `pomodoro.desc.${phase.recommendedPomodoros}`
+    ? t(`pomodoro.desc.${phase.recommendedPomodoros}`)
+    : t("pomodoro.desc.default");
 
   return (
     <div className="mx-auto flex min-h-screen max-w-6xl flex-col px-5 py-8">
@@ -86,15 +89,18 @@ const Index = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className="text-2xl">🏊‍♀️</span>
-          <h1 className="font-display text-2xl text-foreground">Fluye</h1>
+          <h1 className="font-display text-2xl text-foreground">{t("app.name")}</h1>
         </div>
-        <button
-          onClick={() => setShowSetup(!showSetup)}
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-muted-foreground transition-colors hover:bg-secondary/80"
-          aria-label="Configuración"
-        >
-          <Settings size={18} />
-        </button>
+        <div className="flex items-center gap-2">
+          <LanguageSwitcher />
+          <button
+            onClick={() => setShowSetup(!showSetup)}
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-muted-foreground transition-colors hover:bg-secondary/80"
+            aria-label={t("setup.title")}
+          >
+            <Settings size={18} />
+          </button>
+        </div>
       </div>
 
       {/* Setup panel */}
@@ -110,14 +116,14 @@ const Index = () => {
               onSave={() => {
                 refreshPhase();
                 setShowSetup(false);
-                toast("✅ Configuración guardada");
+                toast(t("setup.saved"));
               }}
             />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Phase + Pomodoros — two columns */}
+      {/* Phase + Pomodoros */}
       <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
         {phase.dayInCycle > 0 ? (
           <motion.div
@@ -127,9 +133,9 @@ const Index = () => {
           >
             <span className="text-3xl">{phase.emoji}</span>
             <div>
-              <h2 className="font-display text-xl text-foreground">{phase.name}</h2>
+              <h2 className="font-display text-xl text-foreground">{phaseName}</h2>
               <p className="text-sm text-muted-foreground">
-                Día {phase.dayInCycle} · {phase.description}
+                Día {phase.dayInCycle} · {phaseDesc}
               </p>
             </div>
           </motion.div>
@@ -137,8 +143,8 @@ const Index = () => {
           <div className="flex items-center gap-3 rounded-2xl bg-secondary/50 px-5 py-4">
             <span className="text-3xl">{phase.emoji}</span>
             <div>
-              <h2 className="font-display text-xl text-foreground">{phase.name}</h2>
-              <p className="text-sm text-muted-foreground">{phase.description}</p>
+              <h2 className="font-display text-xl text-foreground">{phaseName}</h2>
+              <p className="text-sm text-muted-foreground">{phaseDesc}</p>
             </div>
           </div>
         )}
@@ -146,36 +152,22 @@ const Index = () => {
         <PhaseCard phase={phase} completed={completed} description={pomodoroDesc} />
       </div>
 
-      {/* Three-column layout: Timer + Tasks + Recommendations */}
+      {/* Timer + Tasks + Recommendations */}
       <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6 flex-1">
         <div className="flex flex-col items-center justify-center gap-8">
           <CircularTimer timeLeft={timeLeft} totalTime={totalTime} isRunning={isRunning} mode={mode} />
-          <TimerControls
-            isRunning={isRunning}
-            mode={mode}
-            onPlay={play}
-            onPause={pause}
-            onReset={reset}
-            onSkipBreak={skipBreak}
-          />
+          <TimerControls isRunning={isRunning} mode={mode} onPlay={play} onPause={pause} onReset={reset} onSkipBreak={skipBreak} />
         </div>
-
         <div className="flex flex-col gap-4">
           <TaskList />
         </div>
-
         <div className="flex flex-col justify-center">
           <PhaseRecommendations phase={phase} />
         </div>
       </div>
 
       {/* Weekly History */}
-      <motion.div
-        key={historyKey}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mt-6"
-      >
+      <motion.div key={historyKey} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-6">
         <WeeklyHistory />
       </motion.div>
 
@@ -184,15 +176,12 @@ const Index = () => {
         <HelpSection />
       </div>
 
-      {/* Footer */}
       <Footer />
 
-      {/* Completion dialog */}
       <PomodoroCompleteDialog
         open={showCompleteDialog}
         onClose={() => {
           setShowCompleteDialog(false);
-          // Refresh count in case the day changed while dialog was open
           setCompleted(getCompletedPomodoros());
         }}
         completed={completed}
