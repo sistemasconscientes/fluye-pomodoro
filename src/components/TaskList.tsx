@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Plus, Check, Trash2 } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 interface Task {
   id: string;
@@ -8,7 +9,6 @@ interface Task {
 }
 
 const STORAGE_KEY = "fluye_tasks";
-const STORAGE_DATE_KEY = "fluye_tasks_date";
 
 function loadTasks(): Task[] {
   try {
@@ -23,6 +23,7 @@ function saveTasks(tasks: Task[]) {
 }
 
 const TaskList = () => {
+  const { t } = useI18n();
   const [tasks, setTasks] = useState<Task[]>(loadTasks);
   const [newTask, setNewTask] = useState("");
 
@@ -36,9 +37,7 @@ const TaskList = () => {
   };
 
   const toggleTask = (id: string) => {
-    const updated = tasks.map((t) =>
-      t.id === id ? { ...t, done: !t.done } : t
-    );
+    const updated = tasks.map((t) => t.id === id ? { ...t, done: !t.done } : t);
     setTasks(updated);
     saveTasks(updated);
   };
@@ -53,21 +52,20 @@ const TaskList = () => {
 
   return (
     <div className="rounded-2xl bg-secondary/50 p-5 h-full flex flex-col">
-      <h3 className="font-display text-base text-foreground mb-1">Tareas de hoy</h3>
+      <h3 className="font-display text-base text-foreground mb-1">{t("tasks.title")}</h3>
       {tasks.length > 0 && (
         <p className="text-xs text-muted-foreground mb-3">
-          {doneCount}/{tasks.length} completadas
+          {t("tasks.completed", { done: doneCount, total: tasks.length })}
         </p>
       )}
 
-      {/* Add task */}
       <div className="flex gap-2 mb-3">
         <input
           type="text"
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && addTask()}
-          placeholder="Agregar tarea..."
+          placeholder={t("tasks.placeholder")}
           className="flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-muted-foreground/60"
         />
         <button
@@ -79,35 +77,23 @@ const TaskList = () => {
         </button>
       </div>
 
-      {/* Task list */}
       <div className="flex-1 space-y-1.5 overflow-y-auto">
         {tasks.length === 0 && (
           <p className="text-xs text-muted-foreground/60 text-center py-4">
-            Agrega tareas para organizar tu día
+            {t("tasks.empty")}
           </p>
         )}
         {tasks.map((task) => (
-          <div
-            key={task.id}
-            className="group flex items-center gap-2 rounded-lg px-2 py-1.5 transition-colors hover:bg-background/50"
-          >
+          <div key={task.id} className="group flex items-center gap-2 rounded-lg px-2 py-1.5 transition-colors hover:bg-background/50">
             <button
               onClick={() => toggleTask(task.id)}
               className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border transition-all ${
-                task.done
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-border hover:border-primary/50"
+                task.done ? "border-primary bg-primary text-primary-foreground" : "border-border hover:border-primary/50"
               }`}
             >
               {task.done && <Check size={12} />}
             </button>
-            <span
-              className={`flex-1 text-sm transition-all ${
-                task.done
-                  ? "text-muted-foreground line-through"
-                  : "text-foreground"
-              }`}
-            >
+            <span className={`flex-1 text-sm transition-all ${task.done ? "text-muted-foreground line-through" : "text-foreground"}`}>
               {task.text}
             </span>
             <button

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { getLastPeriod, getRegularity, setLastPeriod, setRegularity, getMenstruates, setMenstruates, type CycleRegularity } from "@/lib/storage";
 import { getFeeling, setFeeling, type FeelingLevel } from "@/lib/feeling";
+import { useI18n } from "@/lib/i18n";
 import RegularitySelector from "@/components/RegularitySelector";
 import FeelingSelector from "@/components/FeelingSelector";
 
@@ -9,6 +10,7 @@ interface CycleSetupProps {
 }
 
 const CycleSetup = ({ onSave }: CycleSetupProps) => {
+  const { t } = useI18n();
   const [isMenstruating, setIsMenstruating] = useState<boolean>(getMenstruates() ?? false);
   const [date, setDate] = useState(getLastPeriod() || "");
   const [regularity, setReg] = useState<CycleRegularity | null>(getRegularity());
@@ -27,15 +29,12 @@ const CycleSetup = ({ onSave }: CycleSetupProps) => {
 
   return (
     <div className="space-y-4">
-      {/* Menstruating toggle */}
       <div className="rounded-2xl bg-secondary/50 p-5">
-        <h2 className="font-display text-lg text-foreground">Configuración</h2>
-        <p className="mb-4 text-sm text-muted-foreground">
-          Personaliza tus recomendaciones de productividad
-        </p>
+        <h2 className="font-display text-lg text-foreground">{t("setup.title")}</h2>
+        <p className="mb-4 text-sm text-muted-foreground">{t("setup.subtitle")}</p>
 
         <div className="mb-4">
-          <p className="text-sm font-medium text-foreground mb-2">¿Eres persona menstruante?</p>
+          <p className="text-sm font-medium text-foreground mb-2">{t("onboarding.question.menstruating")}</p>
           <div className="flex gap-3">
             <button
               onClick={() => setIsMenstruating(true)}
@@ -45,7 +44,7 @@ const CycleSetup = ({ onSave }: CycleSetupProps) => {
                   : "border-border bg-background text-foreground hover:border-primary/40"
               }`}
             >
-              Sí
+              {t("onboarding.yes")}
             </button>
             <button
               onClick={() => setIsMenstruating(false)}
@@ -55,7 +54,7 @@ const CycleSetup = ({ onSave }: CycleSetupProps) => {
                   : "border-border bg-background text-foreground hover:border-primary/40"
               }`}
             >
-              No
+              {t("onboarding.no")}
             </button>
           </div>
         </div>
@@ -63,7 +62,7 @@ const CycleSetup = ({ onSave }: CycleSetupProps) => {
         {isMenstruating && (
           <div>
             <label className="mb-1 block text-sm font-medium text-foreground">
-              Fecha de última menstruación
+              {t("onboarding.lastPeriod")}
             </label>
             <input
               type="date"
@@ -76,23 +75,17 @@ const CycleSetup = ({ onSave }: CycleSetupProps) => {
       </div>
 
       {isMenstruating && (
-        <RegularitySelector
-          selected={regularity}
-          onSelect={(r) => setReg(r)}
-        />
+        <RegularitySelector selected={regularity} onSelect={(r) => setReg(r)} />
       )}
 
-      <FeelingSelector
-        selected={feeling}
-        onSelect={(f) => setFeel(f)}
-      />
+      <FeelingSelector selected={feeling} onSelect={(f) => setFeel(f)} />
 
       <button
         onClick={handleSave}
         disabled={isMenstruating && !date}
         className="w-full rounded-xl bg-primary py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-40"
       >
-        Guardar configuración
+        {t("setup.save")}
       </button>
     </div>
   );

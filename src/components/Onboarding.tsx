@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Moon, HelpCircle, X } from "lucide-react";
 import { setLastPeriod, setRegularity, setMenstruates, type CycleRegularity } from "@/lib/storage";
 import { setFeeling, type FeelingLevel } from "@/lib/feeling";
+import { useI18n } from "@/lib/i18n";
 import RegularitySelector from "@/components/RegularitySelector";
 import FeelingSelector from "@/components/FeelingSelector";
 import HelpSection from "@/components/HelpSection";
@@ -13,6 +14,7 @@ interface OnboardingProps {
 type Step = "welcome" | "cycle" | "feeling";
 
 const Onboarding = ({ onComplete }: OnboardingProps) => {
+  const { t } = useI18n();
   const [step, setStep] = useState<Step>("welcome");
   const [isMenstruating, setIsMenstruating] = useState<boolean | null>(null);
   const [date, setDate] = useState("");
@@ -47,11 +49,10 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
 
   return (
     <div className="mx-auto flex min-h-screen max-w-md flex-col items-center justify-center px-5 py-8 relative">
-      {/* Help toggle button */}
       <button
         onClick={() => setShowHelp(!showHelp)}
         className="absolute top-6 right-6 flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-muted-foreground transition-colors hover:bg-secondary/80"
-        aria-label="Guía de Fluye"
+        aria-label={t("onboarding.helpLabel")}
       >
         {showHelp ? <X size={18} /> : <HelpCircle size={18} />}
       </button>
@@ -67,44 +68,38 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
               <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-primary/15">
                 <Moon size={36} className="text-primary" />
               </div>
-              <h1 className="font-display text-3xl text-foreground">Fluye</h1>
+              <h1 className="font-display text-3xl text-foreground">{t("app.name")}</h1>
               <p className="mt-2 text-sm text-muted-foreground leading-relaxed max-w-xs">
-                Productividad que respeta tus ritmos naturales
+                {t("app.tagline")}
               </p>
 
               <div className="mt-10 w-full space-y-3">
                 <p className="text-sm font-medium text-foreground">
-                  ¿Eres persona menstruante?
+                  {t("onboarding.question.menstruating")}
                 </p>
                 <p className="text-xs text-muted-foreground mb-2">
-                  Esto nos ayuda a personalizar tus recomendaciones de productividad
+                  {t("onboarding.question.menstruating.desc")}
                 </p>
                 <div className="flex gap-3">
                   <button
-                    onClick={() => {
-                      setIsMenstruating(true);
-                      setStep("cycle");
-                    }}
+                    onClick={() => { setIsMenstruating(true); setStep("cycle"); }}
                     className={`flex-1 rounded-xl border px-4 py-3.5 text-sm font-medium transition-all ${
                       isMenstruating === true
                         ? "border-primary bg-primary/10 ring-2 ring-primary/20 text-foreground"
                         : "border-border bg-background text-foreground hover:border-primary/40"
                     }`}
                   >
-                    Sí
+                    {t("onboarding.yes")}
                   </button>
                   <button
-                    onClick={() => {
-                      setIsMenstruating(false);
-                      setStep("feeling");
-                    }}
+                    onClick={() => { setIsMenstruating(false); setStep("feeling"); }}
                     className={`flex-1 rounded-xl border px-4 py-3.5 text-sm font-medium transition-all ${
                       isMenstruating === false
                         ? "border-primary bg-primary/10 ring-2 ring-primary/20 text-foreground"
                         : "border-border bg-background text-foreground hover:border-primary/40"
                     }`}
                   >
-                    No
+                    {t("onboarding.no")}
                   </button>
                 </div>
 
@@ -112,7 +107,7 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
                   onClick={handleSkip}
                   className="w-full rounded-xl border border-border py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary/50 mt-4"
                 >
-                  Saltar (usar defaults)
+                  {t("onboarding.skip")}
                 </button>
               </div>
             </div>
@@ -120,16 +115,12 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
 
           {step === "cycle" && (
             <div className="w-full space-y-5">
-              <button
-                onClick={() => setStep("welcome")}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                ← Volver
+              <button onClick={() => setStep("welcome")} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                {t("onboarding.back")}
               </button>
-
               <div>
                 <label className="mb-1 block text-sm font-medium text-foreground">
-                  Fecha de última menstruación
+                  {t("onboarding.lastPeriod")}
                 </label>
                 <input
                   type="date"
@@ -138,17 +129,12 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
                   className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/30"
                 />
               </div>
-
-              <RegularitySelector
-                selected={regularity}
-                onSelect={(r) => setReg(r)}
-              />
-
+              <RegularitySelector selected={regularity} onSelect={(r) => setReg(r)} />
               <button
                 onClick={() => setStep("feeling")}
                 className="w-full rounded-xl bg-primary py-3.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
               >
-                Siguiente
+                {t("onboarding.next")}
               </button>
             </div>
           )}
@@ -159,19 +145,14 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
                 onClick={() => setStep(isMenstruating ? "cycle" : "welcome")}
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                ← Volver
+                {t("onboarding.back")}
               </button>
-
-              <FeelingSelector
-                selected={feeling}
-                onSelect={(f) => setFeel(f)}
-              />
-
+              <FeelingSelector selected={feeling} onSelect={(f) => setFeel(f)} />
               <button
                 onClick={handleStart}
                 className="w-full rounded-xl bg-primary py-3.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
               >
-                Empezar
+                {t("onboarding.start")}
               </button>
             </div>
           )}

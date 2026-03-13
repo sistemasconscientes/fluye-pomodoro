@@ -1,36 +1,25 @@
 import type { CycleRegularity } from "@/lib/storage";
+import { useI18n, getRegularityOptionsTranslated } from "@/lib/i18n";
 
 interface RegularitySelectorProps {
   selected: CycleRegularity | null;
   onSelect: (regularity: CycleRegularity) => void;
 }
 
-const OPTIONS: { value: CycleRegularity; label: string; emoji: string; description: string }[] = [
-  {
-    value: "regular",
-    label: "Regular",
-    emoji: "🔄",
-    description: "Mi ciclo dura más o menos lo mismo cada mes (~28 días)",
-  },
-  {
-    value: "irregular",
-    label: "Irregular",
-    emoji: "🌀",
-    description: "Mi ciclo varía bastante de mes a mes",
-  },
-];
-
 const RegularitySelector = ({ selected, onSelect }: RegularitySelectorProps) => {
+  const { t } = useI18n();
+  const options = getRegularityOptionsTranslated(t);
+
   return (
     <div className="rounded-2xl bg-secondary/50 p-5">
       <h2 className="font-display text-lg text-foreground">
-        ¿Cómo es tu ciclo?
+        {t("regularity.title")}
       </h2>
       <p className="mb-4 text-sm text-muted-foreground">
-        Esto nos ayuda a estimar tus fases
+        {t("regularity.subtitle")}
       </p>
       <div className="space-y-2">
-        {OPTIONS.map((option) => (
+        {options.map((option) => (
           <button
             key={option.value}
             onClick={() => onSelect(option.value)}

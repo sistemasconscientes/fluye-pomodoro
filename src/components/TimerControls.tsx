@@ -1,6 +1,7 @@
 import { Play, Pause, RotateCcw, SkipForward } from "lucide-react";
 import { motion } from "framer-motion";
 import type { TimerMode } from "@/hooks/useTimer";
+import { useI18n } from "@/lib/i18n";
 
 interface TimerControlsProps {
   isRunning: boolean;
@@ -12,6 +13,7 @@ interface TimerControlsProps {
 }
 
 const TimerControls = ({ isRunning, mode, onPlay, onPause, onReset, onSkipBreak }: TimerControlsProps) => {
+  const { t } = useI18n();
   const isBreak = mode !== "work";
 
   return (
@@ -22,7 +24,7 @@ const TimerControls = ({ isRunning, mode, onPlay, onPause, onReset, onSkipBreak 
           animate={{ opacity: 1, y: 0 }}
           className="text-sm font-medium text-accent"
         >
-          {mode === "longBreak" ? "☕ Descanso largo" : "🧘 Descanso corto"}
+          {mode === "longBreak" ? t("timer.longBreakLabel") : t("timer.shortBreakLabel")}
         </motion.p>
       )}
       <div className="flex items-center justify-center gap-6">
@@ -33,21 +35,19 @@ const TimerControls = ({ isRunning, mode, onPlay, onPause, onReset, onSkipBreak 
         >
           <RotateCcw size={20} />
         </button>
-
         <motion.button
           whileTap={{ scale: 0.92 }}
           onClick={isRunning ? onPause : onPlay}
           className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-lg transition-transform hover:scale-105"
-          aria-label={isRunning ? "Pausa" : "Iniciar"}
+          aria-label={isRunning ? "Pause" : "Play"}
         >
           {isRunning ? <Pause size={24} /> : <Play size={24} className="ml-1" />}
         </motion.button>
-
         {isBreak ? (
           <button
             onClick={onSkipBreak}
             className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-muted-foreground transition-colors hover:bg-secondary/80"
-            aria-label="Saltar descanso"
+            aria-label="Skip break"
           >
             <SkipForward size={20} />
           </button>

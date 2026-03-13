@@ -1,4 +1,5 @@
-import { FEELING_OPTIONS, type FeelingLevel } from "@/lib/feeling";
+import { type FeelingLevel } from "@/lib/feeling";
+import { useI18n, getFeelingOptionsTranslated } from "@/lib/i18n";
 
 interface FeelingSelectorProps {
   selected: FeelingLevel | null;
@@ -6,16 +7,19 @@ interface FeelingSelectorProps {
 }
 
 const FeelingSelector = ({ selected, onSelect }: FeelingSelectorProps) => {
+  const { t } = useI18n();
+  const options = getFeelingOptionsTranslated(t);
+
   return (
     <div className="rounded-2xl bg-secondary/50 p-5">
       <h2 className="font-display text-lg text-foreground">
-        ¿Cómo sientes tu energía hoy para trabajar?
+        {t("feeling.title")}
       </h2>
       <p className="mb-4 text-sm text-muted-foreground">
-        Esto ajusta cuántos pomodoros te recomendamos
+        {t("feeling.subtitle")}
       </p>
       <div className="space-y-2">
-        {FEELING_OPTIONS.map((option) => (
+        {options.map((option) => (
           <button
             key={option.level}
             onClick={() => onSelect(option.level)}
