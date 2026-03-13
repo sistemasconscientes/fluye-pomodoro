@@ -14,7 +14,7 @@ import WeeklyHistory from "@/components/WeeklyHistory";
 import PomodoroCompleteDialog from "@/components/PomodoroCompleteDialog";
 import { useTimer } from "@/hooks/useTimer";
 import { getCyclePhase, getDefaultPhase, type CyclePhase } from "@/lib/cycle";
-import { getLastPeriod, getCycleLength, getCompletedPomodoros, incrementPomodoros } from "@/lib/storage";
+import { getLastPeriod, getCycleLength, getCompletedPomodoros, incrementPomodoros, getMenstruates } from "@/lib/storage";
 import { recordPomodoro } from "@/lib/history";
 import { playCompletionSound } from "@/lib/sound";
 import { toast } from "sonner";
