@@ -438,7 +438,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
       let value = dictionaries[locale][key] || dictionaries["es"][key] || key;
       if (params) {
         Object.entries(params).forEach(([k, v]) => {
-          value = value.replaceAll(`{${k}}`, String(v));
+          value = value.split(`{${k}}`).join(String(v));
         });
       }
       return value;
