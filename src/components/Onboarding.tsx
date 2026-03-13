@@ -18,7 +18,7 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
   const [date, setDate] = useState("");
   const [regularity, setReg] = useState<CycleRegularity | null>(null);
   const [feeling, setFeel] = useState<FeelingLevel | null>(null);
-  const [showHelp, setShowHelp] = useState(false);
+  const [showHelp, setShowHelp] = useState(true);
 
   const handleStart = () => {
     if (isMenstruating) {
