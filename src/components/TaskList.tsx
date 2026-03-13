@@ -19,8 +19,6 @@ function loadTasks(): Task[] {
 }
 
 function saveTasks(tasks: Task[]) {
-  const today = new Date().toISOString().split("T")[0];
-  localStorage.setItem(STORAGE_DATE_KEY, today);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
 }
 
