@@ -9,7 +9,7 @@ const FeelingSelector = ({ selected, onSelect }: FeelingSelectorProps) => {
   return (
     <div className="rounded-2xl bg-secondary/50 p-5">
       <h2 className="font-display text-lg text-foreground">
-        ¿Cómo te sientes hoy para trabajar?
+        ¿Cómo sientes tu energía hoy para trabajar?
       </h2>
       <p className="mb-4 text-sm text-muted-foreground">
         Esto ajusta cuántos pomodoros te recomendamos
