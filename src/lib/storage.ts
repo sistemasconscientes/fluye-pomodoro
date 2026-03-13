@@ -4,7 +4,26 @@ const KEYS = {
   REGULARITY: "fluye_regularity",
   POMODOROS_TODAY: "fluye_pomodoros_today",
   POMODOROS_DATE: "fluye_pomodoros_date",
+  MENSTRUATES: "fluye_menstruates",
 };
+
+export type CycleRegularity = "regular" | "irregular" | "none";
+
+const REGULARITY_CYCLE_LENGTHS: Record<CycleRegularity, number> = {
+  regular: 28,
+  irregular: 32,
+  none: 28,
+};
+
+export function getMenstruates(): boolean | null {
+  const val = localStorage.getItem(KEYS.MENSTRUATES);
+  if (val === null) return null;
+  return val === "true";
+}
+
+export function setMenstruates(value: boolean) {
+  localStorage.setItem(KEYS.MENSTRUATES, String(value));
+}
 
 export type CycleRegularity = "regular" | "irregular" | "none";
 
