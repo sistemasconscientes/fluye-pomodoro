@@ -25,14 +25,6 @@ export function setMenstruates(value: boolean) {
   localStorage.setItem(KEYS.MENSTRUATES, String(value));
 }
 
-export type CycleRegularity = "regular" | "irregular" | "none";
-
-const REGULARITY_CYCLE_LENGTHS: Record<CycleRegularity, number> = {
-  regular: 28,
-  irregular: 32,
-  none: 28,
-};
-
 export function getLastPeriod(): string | null {
   return localStorage.getItem(KEYS.LAST_PERIOD);
 }
