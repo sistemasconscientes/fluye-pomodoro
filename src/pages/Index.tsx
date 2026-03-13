@@ -185,7 +185,11 @@ const Index = () => {
       {/* Completion dialog */}
       <PomodoroCompleteDialog
         open={showCompleteDialog}
-        onClose={() => setShowCompleteDialog(false)}
+        onClose={() => {
+          setShowCompleteDialog(false);
+          // Refresh count in case the day changed while dialog was open
+          setCompleted(getCompletedPomodoros());
+        }}
         completed={completed}
         recommended={phase.recommendedPomodoros}
       />
