@@ -65,8 +65,15 @@ const en: Dict = {
   "phase.lateLuteal": "Late Luteal",
   "phase.lateLuteal.desc": "Prioritize the essentials, rest",
   "phase.yourRhythm": "Your rhythm",
+  "phase.yourRhythm.desc": "Based on your energy today",
   "phase.basedOnEnergy": "Based on your energy today",
   "phase.configureFeeling": "Set how you feel to personalize",
+
+  // Recommendations - Your Rhythm (non-menstruating)
+  "rec.yourRhythm.phrase": "Adjust your rhythm based on how you feel today.",
+  "rec.yourRhythm.tip1": "Organize tasks by priority",
+  "rec.yourRhythm.tip2": "Alternate focus blocks with breaks",
+  "rec.yourRhythm.tip3": "Listen to your body and adapt your pace",
 
   // Pomodoro descriptions
   "pomodoro.desc.4": "Your body needs rest. Fewer sessions, more care.",
