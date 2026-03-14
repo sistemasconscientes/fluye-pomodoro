@@ -27,7 +27,19 @@ const CycleSetup = ({ onSave }: CycleSetupProps) => {
       if (regularity) setRegularity(regularity);
     }
     if (feeling) setFeeling(feeling);
+    setNotificationsEnabled(notificationsOn);
     onSave();
+  };
+
+  const handleToggleNotifications = async () => {
+    if (!notificationsOn) {
+      // Turning on: request permission first
+      const status = await requestNotificationPermission();
+      if (status === "denied") return; // Browser blocked, can't enable
+      setNotificationsOn(true);
+    } else {
+      setNotificationsOn(false);
+    }
   };
 
   return (

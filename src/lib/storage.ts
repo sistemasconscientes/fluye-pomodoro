@@ -72,3 +72,12 @@ export function incrementPomodoros(): number {
   localStorage.setItem(KEYS.POMODOROS_TODAY, String(next));
   return next;
 }
+
+export function getNotificationsEnabled(): boolean {
+  const val = localStorage.getItem(KEYS.NOTIFICATIONS_ENABLED);
+  return val === null ? true : val === "true"; // enabled by default
+}
+
+export function setNotificationsEnabled(value: boolean) {
+  localStorage.setItem(KEYS.NOTIFICATIONS_ENABLED, String(value));
+}
