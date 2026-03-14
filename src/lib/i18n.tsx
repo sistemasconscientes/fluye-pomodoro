@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
-import { dictionaries } from "@/locales";
+import { dictionaries, type Locale } from "@/locales";
 
-export type Locale = "es" | "en";
+export type { Locale };
 
 const STORAGE_KEY = "fluye_locale";
 
