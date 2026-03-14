@@ -25,7 +25,7 @@ const LanguageSwitcher = () => {
       aria-label="Switch language"
     >
       <span className="text-base">{flag}</span>
-      <span className="text-xs uppercase">{next}</span>
+      <span className="text-xs uppercase">{label}</span>
     </button>
   );
 };
