@@ -98,6 +98,7 @@ const en: Dict = {
   "tasks.placeholder": "Add a task...",
   "tasks.empty": "Add tasks to organize your day",
   "tasks.privacy": "🔒 Your tasks are saved only in this browser",
+  "tasks.showCompleted": "Show completed ({count})",
 
   // Weekly history
   "history.title": "Last 7 days",
