@@ -78,6 +78,8 @@ export function useTimer(onWorkComplete: () => void, notificationTexts?: TimerNo
 
   const play = useCallback(() => {
     if (timeLeft <= 0) return;
+    // Request notification permission on first play
+    requestNotificationPermission();
     // Set the absolute end time based on current timeLeft
     endTimeRef.current = Date.now() + timeLeft * 1000;
     setIsRunning(true);
