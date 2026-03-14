@@ -191,18 +191,6 @@ const es: Dict = {
   "footer.forkGithub": "🍴 Fork en GitHub",
   "footer.buyCoffee": "☕ Regálame un café",
 
-  // Features page
-  "features.title": "Sugerencias",
-  "features.subtitle": "Vota y sugiere mejoras para Fluye",
-  "features.placeholder": "Describe tu sugerencia...",
-  "features.add": "Agregar",
-  "features.cancel": "Cancelar",
-  "features.suggest": "Sugerir nueva mejora",
-  "features.empty": "Aún no hay sugerencias. ¡Sé el primero!",
-  "features.fix": "Fix",
-  "features.improve": "Mejora",
-  "features.new": "Nuevo",
-  "features.design": "Diseño",
 
   // 404
   "notFound.title": "404",
