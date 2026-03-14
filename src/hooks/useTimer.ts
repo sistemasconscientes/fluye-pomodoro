@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from "react";
+import { requestNotificationPermission, sendTimerNotification } from "@/lib/notifications";
 
 // Pomodoro durations (seconds)
 const WORK_SECONDS = 25 * 60;
