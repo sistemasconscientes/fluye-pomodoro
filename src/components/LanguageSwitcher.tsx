@@ -1,11 +1,21 @@
 import { useI18n, type Locale } from "@/lib/i18n";
 
+const localeOrder: Locale[] = ["es", "en", "pt"];
+const localeLabels: Record<Locale, { flag: string; next: string }> = {
+  es: { flag: "🇲🇽", next: "EN" },
+  en: { flag: "🇺🇸", next: "PT" },
+  pt: { flag: "🇧🇷", next: "ES" },
+};
+
 const LanguageSwitcher = () => {
   const { locale, setLocale } = useI18n();
 
   const toggle = () => {
-    setLocale(locale === "es" ? "en" : "es");
+    const idx = localeOrder.indexOf(locale);
+    setLocale(localeOrder[(idx + 1) % localeOrder.length]);
   };
+
+  const { flag, next } = localeLabels[locale];
 
   return (
     <button
@@ -13,8 +23,8 @@ const LanguageSwitcher = () => {
       className="flex h-10 items-center gap-1.5 rounded-full bg-secondary px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary/80"
       aria-label="Switch language"
     >
-      <span className="text-base">{locale === "es" ? "🇺🇸" : "🇲🇽"}</span>
-      <span className="text-xs uppercase">{locale === "es" ? "EN" : "ES"}</span>
+      <span className="text-base">{flag}</span>
+      <span className="text-xs uppercase">{next}</span>
     </button>
   );
 };
