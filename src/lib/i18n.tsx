@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useRef, type ReactNode } from "react";
 import { dictionaries, type Locale } from "@/locales";
 
 export type { Locale };
@@ -6,11 +6,27 @@ export type { Locale };
 const STORAGE_KEY = "fluye_locale";
 
 function getInitialLocale(): Locale {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved === "en" || saved === "es") return saved;
-  const browserLang = navigator.language.slice(0, 2);
-  return browserLang === "en" ? "en" : "es";
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved === "en" || saved === "es") return saved;
+    const browserLang = navigator.language.slice(0, 2);
+    return browserLang === "en" ? "en" : "es";
+  } catch {
+    return "es";
+  }
 }
+
+// Default fallback so the app never crashes if context is missing
+const defaultT = (key: string, params?: Record<string, string | number>): string => {
+  const locale = getInitialLocale();
+  let value = dictionaries[locale]?.[key] || dictionaries["es"]?.[key] || key;
+  if (params) {
+    Object.entries(params).forEach(([k, v]) => {
+      value = value.split(`{${k}}`).join(String(v));
+    });
+  }
+  return value;
+};
 
 interface I18nContextType {
   locale: Locale;
@@ -18,7 +34,11 @@ interface I18nContextType {
   t: (key: string, params?: Record<string, string | number>) => string;
 }
 
-const I18nContext = createContext<I18nContextType | null>(null);
+const I18nContext = createContext<I18nContextType>({
+  locale: getInitialLocale(),
+  setLocale: () => {},
+  t: defaultT,
+});
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>(getInitialLocale);
@@ -30,7 +50,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   const t = useCallback(
     (key: string, params?: Record<string, string | number>): string => {
-      let value = dictionaries[locale][key] || dictionaries["es"][key] || key;
+      let value = dictionaries[locale]?.[key] || dictionaries["es"]?.[key] || key;
       if (params) {
         Object.entries(params).forEach(([k, v]) => {
           value = value.split(`{${k}}`).join(String(v));
@@ -49,9 +69,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 }
 
 export function useI18n() {
-  const ctx = useContext(I18nContext);
-  if (!ctx) throw new Error("useI18n must be used within I18nProvider");
-  return ctx;
+  return useContext(I18nContext);
 }
 
 // Helper to get translated feeling options
