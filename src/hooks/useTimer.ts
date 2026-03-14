@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from "react";
+import { requestNotificationPermission, sendTimerNotification } from "@/lib/notifications";
 
 // Pomodoro durations (seconds)
 const WORK_SECONDS = 25 * 60;
@@ -6,8 +7,14 @@ const SHORT_BREAK_SECONDS = 5 * 60;
 const LONG_BREAK_SECONDS = 15 * 60;
 
 export type TimerMode = "work" | "shortBreak" | "longBreak";
+export interface TimerNotificationTexts {
+  workCompleteTitle: string;
+  workCompleteBody: string;
+  breakCompleteTitle: string;
+  breakCompleteBody: string;
+}
 
-export function useTimer(onWorkComplete: () => void) {
+export function useTimer(onWorkComplete: () => void, notificationTexts?: TimerNotificationTexts) {
   const [mode, setMode] = useState<TimerMode>("work");
   const [timeLeft, setTimeLeft] = useState(WORK_SECONDS);
   const [isRunning, setIsRunning] = useState(false);
@@ -16,10 +23,12 @@ export function useTimer(onWorkComplete: () => void) {
   // Store the target end time so we can survive background tab throttling
   const endTimeRef = useRef<number | null>(null);
   const onWorkCompleteRef = useRef(onWorkComplete);
+  const notificationTextsRef = useRef(notificationTexts);
 
   useEffect(() => {
     onWorkCompleteRef.current = onWorkComplete;
-  }, [onWorkComplete]);
+    notificationTextsRef.current = notificationTexts;
+  }, [onWorkComplete, notificationTexts]);
 
   const getTotalForMode = (m: TimerMode) => {
     if (m === "work") return WORK_SECONDS;
@@ -38,11 +47,17 @@ export function useTimer(onWorkComplete: () => void) {
     clearTimer();
     setIsRunning(false);
     endTimeRef.current = null;
+    const texts = notificationTextsRef.current;
 
     if (mode === "work") {
       const newCount = sessionCount + 1;
       setSessionCount(newCount);
       onWorkCompleteRef.current();
+
+      // Send browser notification for work completion
+      if (texts) {
+        sendTimerNotification({ title: texts.workCompleteTitle, body: texts.workCompleteBody });
+      }
 
       if (newCount % 4 === 0) {
         setMode("longBreak");
@@ -52,6 +67,10 @@ export function useTimer(onWorkComplete: () => void) {
         setTimeLeft(SHORT_BREAK_SECONDS);
       }
     } else {
+      // Send browser notification for break completion
+      if (texts) {
+        sendTimerNotification({ title: texts.breakCompleteTitle, body: texts.breakCompleteBody });
+      }
       setMode("work");
       setTimeLeft(WORK_SECONDS);
     }
@@ -59,6 +78,8 @@ export function useTimer(onWorkComplete: () => void) {
 
   const play = useCallback(() => {
     if (timeLeft <= 0) return;
+    // Request notification permission on first play
+    requestNotificationPermission();
     // Set the absolute end time based on current timeLeft
     endTimeRef.current = Date.now() + timeLeft * 1000;
     setIsRunning(true);

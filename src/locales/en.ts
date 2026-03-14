@@ -191,6 +191,11 @@ const en: Dict = {
   "footer.forkGithub": "🍴 Fork on GitHub",
   "footer.buyCoffee": "☕ Buy me a coffee",
 
+  // Notifications
+  "notification.workComplete.title": "🍅 Focus block done!",
+  "notification.workComplete.body": "Great work. Take a break — your brain needs it.",
+  "notification.breakComplete.title": "⏰ Break's over!",
+  "notification.breakComplete.body": "Time to get back to focus. You've got this!",
 
   // 404
   "notFound.title": "404",
