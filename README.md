@@ -13,8 +13,26 @@ Temporizador Pomodoro que adapta tu productividad a las fases de tu ciclo menstr
 - **Historial semanal** — Visualiza tu progreso de los últimos 7 días
 - **Lista de tareas** — Organiza qué hacer en cada sesión
 - **Sonido de completación** — Notificación sonora con tres tonos al terminar cada pomodoro
+- **Multilenguaje** — Disponible en español neutro e inglés, con detección automática del idioma del navegador
 - **PWA** — Instalable como app en tu dispositivo
 - **100% privado** — Todos los datos se guardan en localStorage, nada sale de tu navegador
+
+## 🌐 Internacionalización (i18n)
+
+Fluye soporta múltiples idiomas usando un sistema de diccionarios por locale:
+
+```
+src/locales/
+├── types.ts    # Tipo Dict con todas las claves
+├── es.ts       # Español neutro (~200 claves)
+├── en.ts       # English (~200 claves)
+└── index.ts    # Exporta dictionaries y Locale
+```
+
+- **Detección automática**: al primer uso, detecta el idioma del navegador
+- **Persistencia**: el idioma seleccionado se guarda en `localStorage`
+- **Interpolación**: soporta parámetros como `{done}/{total} completadas`
+- **Agregar un idioma**: crea un nuevo archivo (ej. `pt.ts`), exporta el tipo `Dict` y regístralo en `index.ts`
 
 ## 🧮 Lógica de pomodoros recomendados
 
@@ -52,6 +70,7 @@ Si no se selecciona energía, se usa el valor base de la fase.
 - **Web Audio API** — Sonido de completación
 - **localStorage** — Persistencia de datos
 - **vite-plugin-pwa** — Soporte offline
+- **i18n custom** — Sistema de traducciones con diccionarios por locale
 
 ## 🚀 Desarrollo local
 
