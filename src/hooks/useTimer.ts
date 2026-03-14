@@ -47,11 +47,17 @@ export function useTimer(onWorkComplete: () => void, notificationTexts?: TimerNo
     clearTimer();
     setIsRunning(false);
     endTimeRef.current = null;
+    const texts = notificationTextsRef.current;
 
     if (mode === "work") {
       const newCount = sessionCount + 1;
       setSessionCount(newCount);
       onWorkCompleteRef.current();
+
+      // Send browser notification for work completion
+      if (texts) {
+        sendTimerNotification({ title: texts.workCompleteTitle, body: texts.workCompleteBody });
+      }
 
       if (newCount % 4 === 0) {
         setMode("longBreak");
@@ -61,6 +67,10 @@ export function useTimer(onWorkComplete: () => void, notificationTexts?: TimerNo
         setTimeLeft(SHORT_BREAK_SECONDS);
       }
     } else {
+      // Send browser notification for break completion
+      if (texts) {
+        sendTimerNotification({ title: texts.breakCompleteTitle, body: texts.breakCompleteBody });
+      }
       setMode("work");
       setTimeLeft(WORK_SECONDS);
     }
