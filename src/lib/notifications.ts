@@ -1,4 +1,5 @@
 // Browser Notification API wrapper for Fluye timer alerts
+import { getNotificationsEnabled } from "@/lib/storage";
 
 export type NotificationPermissionStatus = "granted" | "denied" | "default" | "unsupported";
 
