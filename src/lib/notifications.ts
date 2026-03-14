@@ -29,12 +29,14 @@ export function sendTimerNotification({ title, body, icon = "/pwa-192.png" }: Ti
   if (document.visibilityState === "visible") return;
 
   try {
-    const notification = new Notification(title, {
+    const options: NotificationOptions & { renotify?: boolean } = {
       body,
       icon,
       badge: icon,
-      tag: "fluye-timer", // Replace previous timer notifications
+      tag: "fluye-timer",
       renotify: true,
+    };
+    const notification = new Notification(title, options as NotificationOptions);
     });
 
     // Auto-close after 8 seconds
