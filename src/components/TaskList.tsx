@@ -49,6 +49,9 @@ const TaskList = () => {
   };
 
   const doneCount = tasks.filter((t) => t.done).length;
+  const pendingTasks = tasks.filter((t) => !t.done);
+  const completedTasks = tasks.filter((t) => t.done);
+  const [showCompleted, setShowCompleted] = useState(false);
 
   return (
     <div className="rounded-2xl bg-secondary/50 p-5 h-full flex flex-col">
@@ -87,19 +90,14 @@ const TaskList = () => {
             {t("tasks.empty")}
           </p>
         )}
-        {tasks.map((task) => (
+        {pendingTasks.map((task) => (
           <div key={task.id} className="group flex items-center gap-2 rounded-lg px-2 py-1.5 transition-colors hover:bg-background/50">
             <button
               onClick={() => toggleTask(task.id)}
-              className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border transition-all ${
-                task.done ? "border-primary bg-primary text-primary-foreground" : "border-border hover:border-primary/50"
-              }`}
+              className="flex h-5 w-5 shrink-0 items-center justify-center rounded border border-border hover:border-primary/50 transition-all"
             >
-              {task.done && <Check size={12} />}
             </button>
-            <span className={`flex-1 text-sm transition-all ${task.done ? "text-muted-foreground line-through" : "text-foreground"}`}>
-              {task.text}
-            </span>
+            <span className="flex-1 text-sm text-foreground">{task.text}</span>
             <button
               onClick={() => removeTask(task.id)}
               className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive transition-all"
@@ -108,6 +106,35 @@ const TaskList = () => {
             </button>
           </div>
         ))}
+
+        {doneCount > 0 && (
+          <>
+            <button
+              onClick={() => setShowCompleted(!showCompleted)}
+              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors pt-2"
+            >
+              <ChevronDown size={14} className={`transition-transform ${showCompleted ? "rotate-0" : "-rotate-90"}`} />
+              {t("tasks.showCompleted", { count: doneCount })}
+            </button>
+            {showCompleted && completedTasks.map((task) => (
+              <div key={task.id} className="group flex items-center gap-2 rounded-lg px-2 py-1.5 transition-colors hover:bg-background/50">
+                <button
+                  onClick={() => toggleTask(task.id)}
+                  className="flex h-5 w-5 shrink-0 items-center justify-center rounded border border-primary bg-primary text-primary-foreground transition-all"
+                >
+                  <Check size={12} />
+                </button>
+                <span className="flex-1 text-sm text-muted-foreground line-through">{task.text}</span>
+                <button
+                  onClick={() => removeTask(task.id)}
+                  className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive transition-all"
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+            ))}
+          </>
+        )}
       </div>
     </div>
   );
