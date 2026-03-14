@@ -89,6 +89,7 @@ const es: Dict = {
   "tasks.completed": "{done}/{total} completadas",
   "tasks.placeholder": "Agregar tarea...",
   "tasks.empty": "Agrega tareas para organizar tu día",
+  "tasks.privacy": "🔒 Tus tareas se guardan solo en este navegador",
 
   // Weekly history
   "history.title": "Últimos 7 días",

@@ -53,9 +53,13 @@ const TaskList = () => {
   return (
     <div className="rounded-2xl bg-secondary/50 p-5 h-full flex flex-col">
       <h3 className="font-display text-base text-foreground mb-1">{t("tasks.title")}</h3>
-      {tasks.length > 0 && (
+      {tasks.length > 0 ? (
         <p className="text-xs text-muted-foreground mb-3">
           {t("tasks.completed", { done: doneCount, total: tasks.length })}
+        </p>
+      ) : (
+        <p className="text-xs text-muted-foreground/60 mb-3">
+          {t("tasks.privacy")}
         </p>
       )}
 
