@@ -37,7 +37,6 @@ export function sendTimerNotification({ title, body, icon = "/pwa-192.png" }: Ti
       renotify: true,
     };
     const notification = new Notification(title, options as NotificationOptions);
-    });
 
     // Auto-close after 8 seconds
     setTimeout(() => notification.close(), 8000);
