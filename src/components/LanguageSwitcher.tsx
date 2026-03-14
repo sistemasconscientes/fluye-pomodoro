@@ -1,10 +1,10 @@
 import { useI18n, type Locale } from "@/lib/i18n";
 
 const localeOrder: Locale[] = ["es", "en", "pt"];
-const localeLabels: Record<Locale, { flag: string; next: string }> = {
-  es: { flag: "🇲🇽", next: "EN" },
-  en: { flag: "🇺🇸", next: "PT" },
-  pt: { flag: "🇧🇷", next: "ES" },
+const localeLabels: Record<Locale, { flag: string; label: string }> = {
+  es: { flag: "🇲🇽", label: "ES" },
+  en: { flag: "🇺🇸", label: "EN" },
+  pt: { flag: "🇧🇷", label: "PT" },
 };
 
 const LanguageSwitcher = () => {
@@ -15,7 +15,8 @@ const LanguageSwitcher = () => {
     setLocale(localeOrder[(idx + 1) % localeOrder.length]);
   };
 
-  const { flag, next } = localeLabels[locale];
+  const next = localeOrder[(localeOrder.indexOf(locale) + 1) % localeOrder.length];
+  const { flag, label } = localeLabels[next];
 
   return (
     <button
@@ -24,7 +25,7 @@ const LanguageSwitcher = () => {
       aria-label="Switch language"
     >
       <span className="text-base">{flag}</span>
-      <span className="text-xs uppercase">{next}</span>
+      <span className="text-xs uppercase">{label}</span>
     </button>
   );
 };
