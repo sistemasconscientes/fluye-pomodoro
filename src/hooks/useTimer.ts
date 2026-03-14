@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 
+// Pomodoro durations (seconds)
 const WORK_SECONDS = 25 * 60;
 const SHORT_BREAK_SECONDS = 5 * 60;
 const LONG_BREAK_SECONDS = 15 * 60;
