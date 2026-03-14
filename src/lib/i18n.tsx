@@ -8,9 +8,11 @@ const STORAGE_KEY = "fluye_locale";
 function getInitialLocale(): Locale {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === "en" || saved === "es") return saved;
+    if (saved === "en" || saved === "es" || saved === "pt") return saved;
     const browserLang = navigator.language.slice(0, 2);
-    return browserLang === "en" ? "en" : "es";
+    if (browserLang === "en") return "en";
+    if (browserLang === "pt") return "pt";
+    return "es";
   } catch {
     return "es";
   }
