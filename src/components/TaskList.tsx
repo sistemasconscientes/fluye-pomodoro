@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Check, Trash2 } from "lucide-react";
+import { Plus, Check, Trash2, ChevronDown } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 
 interface Task {
