@@ -15,7 +15,8 @@ const LanguageSwitcher = () => {
     setLocale(localeOrder[(idx + 1) % localeOrder.length]);
   };
 
-  const { flag, next } = localeLabels[locale];
+  const next = localeOrder[(localeOrder.indexOf(locale) + 1) % localeOrder.length];
+  const { flag, label } = localeLabels[next];
 
   return (
     <button
