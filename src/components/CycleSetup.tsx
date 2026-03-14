@@ -95,6 +95,43 @@ const CycleSetup = ({ onSave }: CycleSetupProps) => {
 
       <FeelingSelector selected={feeling} onSelect={(f) => setFeel(f)} />
 
+      {/* Notification toggle */}
+      <div className="rounded-2xl bg-secondary/50 p-5">
+        <button
+          type="button"
+          onClick={handleToggleNotifications}
+          className="flex w-full items-center justify-between gap-3"
+        >
+          <div className="flex items-center gap-3">
+            {notificationsOn ? (
+              <Bell size={18} className="text-primary" />
+            ) : (
+              <BellOff size={18} className="text-muted-foreground" />
+            )}
+            <div className="text-left">
+              <p className="text-sm font-medium text-foreground">{t("notification.toggle.label")}</p>
+              <p className="text-xs text-muted-foreground">{t("notification.toggle.desc")}</p>
+            </div>
+          </div>
+          <div
+            className={`relative h-6 w-11 rounded-full transition-colors ${
+              notificationsOn ? "bg-primary" : "bg-border"
+            }`}
+          >
+            <div
+              className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${
+                notificationsOn ? "translate-x-5" : "translate-x-0.5"
+              }`}
+            />
+          </div>
+        </button>
+        {getNotificationStatus() === "denied" && (
+          <p className="mt-2 text-xs text-destructive">
+            {t("notification.toggle.label")} — blocked by browser
+          </p>
+        )}
+      </div>
+
       <button
         onClick={handleSave}
         disabled={isMenstruating && !date}
