@@ -1,10 +1,10 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { requestNotificationPermission, sendTimerNotification } from "@/lib/notifications";
 
-// Pomodoro durations (seconds)
-const WORK_SECONDS = 25 * 60;
-const SHORT_BREAK_SECONDS = 5 * 60;
-const LONG_BREAK_SECONDS = 15 * 60;
+// Pomodoro durations (seconds) — TESTING: shortened for notification testing
+const WORK_SECONDS = 10; // TODO: restore to 25 * 60
+const SHORT_BREAK_SECONDS = 5; // TODO: restore to 5 * 60
+const LONG_BREAK_SECONDS = 10; // TODO: restore to 15 * 60
 
 export type TimerMode = "work" | "shortBreak" | "longBreak";
 export interface TimerNotificationTexts {
