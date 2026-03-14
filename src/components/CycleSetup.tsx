@@ -17,6 +17,7 @@ const CycleSetup = ({ onSave }: CycleSetupProps) => {
   const [date, setDate] = useState(getLastPeriod() || "");
   const [regularity, setReg] = useState<CycleRegularity | null>(getRegularity());
   const [feeling, setFeel] = useState<FeelingLevel | null>(getFeeling());
+  const [notificationsOn, setNotificationsOn] = useState(getNotificationsEnabled());
 
   const handleSave = () => {
     setMenstruates(isMenstruating);
