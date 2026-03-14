@@ -12,6 +12,13 @@ export function useTimer(onWorkComplete: () => void) {
   const [isRunning, setIsRunning] = useState(false);
   const [sessionCount, setSessionCount] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // Store the target end time so we can survive background tab throttling
+  const endTimeRef = useRef<number | null>(null);
+  const onWorkCompleteRef = useRef(onWorkComplete);
+
+  useEffect(() => {
+    onWorkCompleteRef.current = onWorkComplete;
+  }, [onWorkComplete]);
 
   const getTotalForMode = (m: TimerMode) => {
     if (m === "work") return WORK_SECONDS;
@@ -26,39 +33,15 @@ export function useTimer(onWorkComplete: () => void) {
     }
   }, []);
 
-  const play = useCallback(() => {
-    if (timeLeft <= 0) return;
-    setIsRunning(true);
-  }, [timeLeft]);
-
-  const pause = useCallback(() => {
-    setIsRunning(false);
-    clearTimer();
-  }, [clearTimer]);
-
-  const reset = useCallback(() => {
-    setIsRunning(false);
-    clearTimer();
-    setMode("work");
-    setTimeLeft(WORK_SECONDS);
-  }, [clearTimer]);
-
-  const skipBreak = useCallback(() => {
-    clearTimer();
-    setIsRunning(false);
-    setMode("work");
-    setTimeLeft(WORK_SECONDS);
-  }, [clearTimer]);
-
-  // Handle timer completion separately
   const handleTimerEnd = useCallback(() => {
     clearTimer();
     setIsRunning(false);
+    endTimeRef.current = null;
 
     if (mode === "work") {
       const newCount = sessionCount + 1;
       setSessionCount(newCount);
-      onWorkComplete();
+      onWorkCompleteRef.current();
 
       if (newCount % 4 === 0) {
         setMode("longBreak");
@@ -71,23 +54,75 @@ export function useTimer(onWorkComplete: () => void) {
       setMode("work");
       setTimeLeft(WORK_SECONDS);
     }
-  }, [clearTimer, mode, sessionCount, onWorkComplete]);
+  }, [clearTimer, mode, sessionCount]);
 
+  const play = useCallback(() => {
+    if (timeLeft <= 0) return;
+    // Set the absolute end time based on current timeLeft
+    endTimeRef.current = Date.now() + timeLeft * 1000;
+    setIsRunning(true);
+  }, [timeLeft]);
+
+  const pause = useCallback(() => {
+    // Snapshot remaining time from the absolute end time
+    if (endTimeRef.current) {
+      const remaining = Math.max(0, Math.round((endTimeRef.current - Date.now()) / 1000));
+      setTimeLeft(remaining);
+    }
+    endTimeRef.current = null;
+    setIsRunning(false);
+    clearTimer();
+  }, [clearTimer]);
+
+  const reset = useCallback(() => {
+    setIsRunning(false);
+    clearTimer();
+    endTimeRef.current = null;
+    setMode("work");
+    setTimeLeft(WORK_SECONDS);
+  }, [clearTimer]);
+
+  const skipBreak = useCallback(() => {
+    clearTimer();
+    setIsRunning(false);
+    endTimeRef.current = null;
+    setMode("work");
+    setTimeLeft(WORK_SECONDS);
+  }, [clearTimer]);
+
+  // Tick loop: derive timeLeft from the absolute end time
+  // This makes the timer resilient to background-tab throttling
   useEffect(() => {
-    if (isRunning) {
+    if (isRunning && endTimeRef.current) {
       intervalRef.current = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev <= 1) {
-            // Schedule completion for next tick to avoid nested setState
-            setTimeout(handleTimerEnd, 0);
-            return 0;
-          }
-          return prev - 1;
-        });
+        const remaining = Math.round((endTimeRef.current! - Date.now()) / 1000);
+        if (remaining <= 0) {
+          setTimeLeft(0);
+          setTimeout(handleTimerEnd, 0);
+        } else {
+          setTimeLeft(remaining);
+        }
       }, 1000);
     }
     return clearTimer;
   }, [isRunning, clearTimer, handleTimerEnd]);
+
+  // Also sync when the tab becomes visible again (fires immediately)
+  useEffect(() => {
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible" && endTimeRef.current) {
+        const remaining = Math.round((endTimeRef.current - Date.now()) / 1000);
+        if (remaining <= 0) {
+          setTimeLeft(0);
+          setTimeout(handleTimerEnd, 0);
+        } else {
+          setTimeLeft(remaining);
+        }
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", onVisibilityChange);
+  }, [handleTimerEnd]);
 
   return {
     timeLeft,
