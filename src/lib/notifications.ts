@@ -25,6 +25,7 @@ interface TimerNotificationOptions {
 
 export function sendTimerNotification({ title, body, icon = "/pwa-192.png" }: TimerNotificationOptions): void {
   if (getNotificationStatus() !== "granted") return;
+  if (!getNotificationsEnabled()) return;
 
   // Only send if tab is not visible (user is away)
   if (document.visibilityState === "visible") return;
