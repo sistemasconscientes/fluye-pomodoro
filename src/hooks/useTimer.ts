@@ -23,6 +23,7 @@ export function useTimer(onWorkComplete: () => void, notificationTexts?: TimerNo
   // Store the target end time so we can survive background tab throttling
   const endTimeRef = useRef<number | null>(null);
   const onWorkCompleteRef = useRef(onWorkComplete);
+  const notificationTextsRef = useRef(notificationTexts);
 
   useEffect(() => {
     onWorkCompleteRef.current = onWorkComplete;
