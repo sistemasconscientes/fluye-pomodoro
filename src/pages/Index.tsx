@@ -61,7 +61,14 @@ const Index = () => {
     playCompletionSound();
   }, []);
 
-  const { timeLeft, totalTime, isRunning, mode, play, pause, reset, skipBreak } = useTimer(handleComplete);
+  const notificationTexts = {
+    workCompleteTitle: t("notification.workComplete.title"),
+    workCompleteBody: t("notification.workComplete.body"),
+    breakCompleteTitle: t("notification.breakComplete.title"),
+    breakCompleteBody: t("notification.breakComplete.body"),
+  };
+
+  const { timeLeft, totalTime, isRunning, mode, play, pause, reset, skipBreak } = useTimer(handleComplete, notificationTexts);
 
   if (!onboarded) {
     return (
