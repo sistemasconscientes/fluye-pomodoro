@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { getLastPeriod, getRegularity, setLastPeriod, setRegularity, getMenstruates, setMenstruates, type CycleRegularity } from "@/lib/storage";
+import { Bell, BellOff } from "lucide-react";
+import { getLastPeriod, getRegularity, setLastPeriod, setRegularity, getMenstruates, setMenstruates, getNotificationsEnabled, setNotificationsEnabled, type CycleRegularity } from "@/lib/storage";
 import { getFeeling, setFeeling, type FeelingLevel } from "@/lib/feeling";
+import { requestNotificationPermission, getNotificationStatus } from "@/lib/notifications";
 import { useI18n } from "@/lib/i18n";
 import RegularitySelector from "@/components/RegularitySelector";
 import FeelingSelector from "@/components/FeelingSelector";
