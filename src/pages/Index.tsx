@@ -135,7 +135,7 @@ const Index = () => {
             <div>
               <h2 className="font-display text-xl text-foreground">{phaseName}</h2>
               <p className="text-sm text-muted-foreground">
-                Día {phase.dayInCycle} · {phaseDesc}
+                {t("phase.dayLabel", { day: phase.dayInCycle })} · {phaseDesc}
               </p>
             </div>
           </motion.div>

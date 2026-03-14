@@ -50,6 +50,7 @@ const es: Dict = {
   // Phase card
   "phase.pomodorosToday": "Pomodoros hoy",
   "phase.daysRemaining": "{count} día{plural} restante{plural} en esta fase",
+  "phase.dayLabel": "Día {day}",
 
   // Phases
   "phase.menstruation": "Menstruación",
