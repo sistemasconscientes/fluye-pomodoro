@@ -196,6 +196,8 @@ const es: Dict = {
   "notification.workComplete.body": "Buen trabajo. Tómate un descanso, tu cerebro lo necesita.",
   "notification.breakComplete.title": "⏰ ¡Descanso terminado!",
   "notification.breakComplete.body": "Es hora de volver al enfoque. ¡Tú puedes!",
+  "notification.toggle.label": "Notificaciones del navegador",
+  "notification.toggle.desc": "Recibe una alerta cuando termine un bloque de enfoque o descanso",
 
   // 404
   "notFound.title": "404",

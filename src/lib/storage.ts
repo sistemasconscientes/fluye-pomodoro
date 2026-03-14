@@ -5,6 +5,7 @@ const KEYS = {
   POMODOROS_TODAY: "fluye_pomodoros_today",
   POMODOROS_DATE: "fluye_pomodoros_date",
   MENSTRUATES: "fluye_menstruates",
+  NOTIFICATIONS_ENABLED: "fluye_notifications_enabled",
 };
 
 export type CycleRegularity = "regular" | "irregular" | "none";
@@ -70,4 +71,13 @@ export function incrementPomodoros(): number {
   const next = current + 1;
   localStorage.setItem(KEYS.POMODOROS_TODAY, String(next));
   return next;
+}
+
+export function getNotificationsEnabled(): boolean {
+  const val = localStorage.getItem(KEYS.NOTIFICATIONS_ENABLED);
+  return val === null ? true : val === "true"; // enabled by default
+}
+
+export function setNotificationsEnabled(value: boolean) {
+  localStorage.setItem(KEYS.NOTIFICATIONS_ENABLED, String(value));
 }

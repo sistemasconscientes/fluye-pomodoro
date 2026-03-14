@@ -1,4 +1,5 @@
 // Browser Notification API wrapper for Fluye timer alerts
+import { getNotificationsEnabled } from "@/lib/storage";
 
 export type NotificationPermissionStatus = "granted" | "denied" | "default" | "unsupported";
 
@@ -24,6 +25,7 @@ interface TimerNotificationOptions {
 
 export function sendTimerNotification({ title, body, icon = "/pwa-192.png" }: TimerNotificationOptions): void {
   if (getNotificationStatus() !== "granted") return;
+  if (!getNotificationsEnabled()) return;
 
   // Only send if tab is not visible (user is away)
   if (document.visibilityState === "visible") return;

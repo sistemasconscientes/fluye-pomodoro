@@ -196,6 +196,8 @@ const pt: Dict = {
   "notification.workComplete.body": "Bom trabalho. Faça uma pausa, seu cérebro precisa.",
   "notification.breakComplete.title": "⏰ Pausa encerrada!",
   "notification.breakComplete.body": "Hora de voltar ao foco. Você consegue!",
+  "notification.toggle.label": "Notificações do navegador",
+  "notification.toggle.desc": "Receba um alerta quando um bloco de foco ou pausa terminar",
 
   // 404
   "notFound.title": "404",
