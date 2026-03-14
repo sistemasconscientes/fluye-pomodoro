@@ -7,8 +7,14 @@ const SHORT_BREAK_SECONDS = 5 * 60;
 const LONG_BREAK_SECONDS = 15 * 60;
 
 export type TimerMode = "work" | "shortBreak" | "longBreak";
+export interface TimerNotificationTexts {
+  workCompleteTitle: string;
+  workCompleteBody: string;
+  breakCompleteTitle: string;
+  breakCompleteBody: string;
+}
 
-export function useTimer(onWorkComplete: () => void) {
+export function useTimer(onWorkComplete: () => void, notificationTexts?: TimerNotificationTexts) {
   const [mode, setMode] = useState<TimerMode>("work");
   const [timeLeft, setTimeLeft] = useState(WORK_SECONDS);
   const [isRunning, setIsRunning] = useState(false);
