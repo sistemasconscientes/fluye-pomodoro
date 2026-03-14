@@ -27,7 +27,8 @@ export function useTimer(onWorkComplete: () => void, notificationTexts?: TimerNo
 
   useEffect(() => {
     onWorkCompleteRef.current = onWorkComplete;
-  }, [onWorkComplete]);
+    notificationTextsRef.current = notificationTexts;
+  }, [onWorkComplete, notificationTexts]);
 
   const getTotalForMode = (m: TimerMode) => {
     if (m === "work") return WORK_SECONDS;
