@@ -3,6 +3,7 @@ import { Settings } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import CircularTimer from "@/components/CircularTimer";
 import TimerControls from "@/components/TimerControls";
+import PipTimer from "@/components/PipTimer";
 import PhaseCard from "@/components/PhaseCard";
 import PhaseRecommendations from "@/components/PhaseRecommendations";
 import CycleSetup from "@/components/CycleSetup";
