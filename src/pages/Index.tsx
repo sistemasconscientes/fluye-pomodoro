@@ -130,57 +130,55 @@ const Index = () => {
         )}
       </AnimatePresence>
 
-      {/* Phase + Pomodoros */}
-      <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
-        {phase.dayInCycle > 0 ? (
-          <motion.div
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-3 rounded-2xl bg-accent/15 px-5 py-4"
-          >
-            <span className="text-3xl">{phase.emoji}</span>
-            <div>
-              <h2 className="font-display text-xl text-foreground">{phaseName}</h2>
-              <p className="text-sm text-muted-foreground">
-                {t("phase.dayLabel", { day: phase.dayInCycle })} · {phaseDesc}
-              </p>
+      {/* Desktop: two-panel layout / Mobile: stacked */}
+      <div className="mt-5 flex-1 grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-6">
+        {/* Left panel: Timer + Tasks */}
+        <div className="flex flex-col items-center gap-6">
+          {/* Phase banner (mobile & desktop) */}
+          {phase.dayInCycle > 0 ? (
+            <motion.div
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="w-full flex items-center gap-3 rounded-2xl bg-accent/15 px-5 py-4"
+            >
+              <span className="text-3xl">{phase.emoji}</span>
+              <div>
+                <h2 className="font-display text-xl text-foreground">{phaseName}</h2>
+                <p className="text-sm text-muted-foreground">
+                  {t("phase.dayLabel", { day: phase.dayInCycle })} · {phaseDesc}
+                </p>
+              </div>
+            </motion.div>
+          ) : (
+            <div className="w-full flex items-center gap-3 rounded-2xl bg-secondary/50 px-5 py-4">
+              <span className="text-3xl">{phase.emoji}</span>
+              <div>
+                <h2 className="font-display text-xl text-foreground">{phaseName}</h2>
+                <p className="text-sm text-muted-foreground">{phaseDesc}</p>
+              </div>
             </div>
-          </motion.div>
-        ) : (
-          <div className="flex items-center gap-3 rounded-2xl bg-secondary/50 px-5 py-4">
-            <span className="text-3xl">{phase.emoji}</span>
-            <div>
-              <h2 className="font-display text-xl text-foreground">{phaseName}</h2>
-              <p className="text-sm text-muted-foreground">{phaseDesc}</p>
-            </div>
-          </div>
-        )}
+          )}
 
-        <PhaseCard phase={phase} completed={completed} description={pomodoroDesc} />
-      </div>
-
-      {/* Timer + Tasks + Recommendations */}
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6 flex-1">
-        <div className="flex flex-col items-center justify-center gap-8">
           <CircularTimer timeLeft={timeLeft} totalTime={totalTime} isRunning={isRunning} mode={mode} />
           <TimerControls isRunning={isRunning} mode={mode} onPlay={play} onPause={pause} onReset={reset} onSkipBreak={skipBreak} />
+
+          <div className="w-full">
+            <TaskList />
+          </div>
         </div>
-        <div className="flex flex-col gap-4">
-          <TaskList />
-        </div>
-        <div className="flex flex-col justify-center">
+
+        {/* Right panel: Progress + Recommendations + History + Help */}
+        <div className="flex flex-col gap-5">
+          <PhaseCard phase={phase} completed={completed} description={pomodoroDesc} />
+
           <PhaseRecommendations phase={phase} />
+
+          <motion.div key={historyKey} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+            <WeeklyHistory />
+          </motion.div>
+
+          <HelpSection />
         </div>
-      </div>
-
-      {/* Weekly History */}
-      <motion.div key={historyKey} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-6">
-        <WeeklyHistory />
-      </motion.div>
-
-      {/* Help section */}
-      <div className="mt-10">
-        <HelpSection />
       </div>
 
       <Footer />
