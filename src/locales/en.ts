@@ -217,6 +217,13 @@ const en: Dict = {
   "install.android": "Install Fluye for quick access without a browser",
   "install.button": "Install",
 
+  // PiP
+  "pip.toggle": "Floating mini timer",
+  "pip.noTasks": "No pending tasks",
+  "pip.confirmComplete": "Mark task as completed?",
+  "pip.confirm": "Yes",
+  "pip.cancel": "No",
+
   // 404
   "notFound.title": "404",
   "notFound.message": "Oops! Page not found",

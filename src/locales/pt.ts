@@ -217,6 +217,13 @@ const pt: Dict = {
   "install.android": "Instale o Fluye para acesso rápido sem navegador",
   "install.button": "Instalar",
 
+  // PiP
+  "pip.toggle": "Mini timer flutuante",
+  "pip.noTasks": "Sem tarefas pendentes",
+  "pip.confirmComplete": "Marcar tarefa como concluída?",
+  "pip.confirm": "Sim",
+  "pip.cancel": "Não",
+
   // 404
   "notFound.title": "404",
   "notFound.message": "Ops! Página não encontrada",
