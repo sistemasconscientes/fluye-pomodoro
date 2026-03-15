@@ -121,6 +121,14 @@ const Index = () => {
           <h1 className="font-display text-2xl text-foreground">{t("app.name")}</h1>
         </div>
         <div className="flex items-center gap-2">
+          <PipTimer
+            timeLeft={timeLeft}
+            isRunning={isRunning}
+            onPlay={play}
+            onPause={pause}
+            tasks={pipTasks}
+            onToggleTask={handlePipToggleTask}
+          />
           <ThemeToggle />
           <LanguageSwitcher />
           <button
