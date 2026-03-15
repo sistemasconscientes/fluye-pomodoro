@@ -27,25 +27,25 @@ const TaskList = ({ onTasksChange }: { onTasksChange?: () => void }) => {
   const [tasks, setTasks] = useState<Task[]>(loadTasks);
   const [newTask, setNewTask] = useState("");
 
+  const updateTasks = (updated: Task[]) => {
+    setTasks(updated);
+    saveTasks(updated);
+    onTasksChange?.();
+  };
+
   const addTask = () => {
     const text = newTask.trim();
     if (!text) return;
-    const updated = [...tasks, { id: crypto.randomUUID(), text, done: false }];
-    setTasks(updated);
-    saveTasks(updated);
+    updateTasks([...tasks, { id: crypto.randomUUID(), text, done: false }]);
     setNewTask("");
   };
 
   const toggleTask = (id: string) => {
-    const updated = tasks.map((t) => t.id === id ? { ...t, done: !t.done } : t);
-    setTasks(updated);
-    saveTasks(updated);
+    updateTasks(tasks.map((t) => t.id === id ? { ...t, done: !t.done } : t));
   };
 
   const removeTask = (id: string) => {
-    const updated = tasks.filter((t) => t.id !== id);
-    setTasks(updated);
-    saveTasks(updated);
+    updateTasks(tasks.filter((t) => t.id !== id));
   };
 
   const doneCount = tasks.filter((t) => t.done).length;
