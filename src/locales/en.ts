@@ -200,6 +200,10 @@ const en: Dict = {
   "notification.toggle.label": "Browser notifications",
   "notification.toggle.desc": "Get an alert when a focus block or break ends",
 
+  // Help toggle
+  "help.showGuide": "Show usage guide",
+  "help.hideGuide": "Hide",
+
   // 404
   "notFound.title": "404",
   "notFound.message": "Oops! Page not found",
