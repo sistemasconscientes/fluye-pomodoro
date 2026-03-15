@@ -204,6 +204,19 @@ const es: Dict = {
   "help.showGuide": "Ver guía de uso",
   "help.hideGuide": "Ocultar",
 
+  // Stats
+  "stats.title": "Tu progreso",
+  "stats.streak": "Racha de días",
+  "stats.dailyAvg": "Promedio diario",
+  "stats.monthTotal": "Este mes",
+  "stats.last30": "Últimos 30 días",
+
+  // Install prompt
+  "install.title": "Instala Fluye en tu dispositivo",
+  "install.ios": "Toca Compartir → Agregar a inicio para usar Fluye como app",
+  "install.android": "Instala Fluye para acceso rápido sin navegador",
+  "install.button": "Instalar",
+
   // 404
   "notFound.title": "404",
   "notFound.message": "¡Ups! Página no encontrada",

@@ -11,8 +11,11 @@ import Onboarding from "@/components/Onboarding";
 import Footer from "@/components/Footer";
 import TaskList from "@/components/TaskList";
 import WeeklyHistory from "@/components/WeeklyHistory";
+import MonthlyStats from "@/components/MonthlyStats";
 import PomodoroCompleteDialog from "@/components/PomodoroCompleteDialog";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import ThemeToggle from "@/components/ThemeToggle";
+import InstallPrompt from "@/components/InstallPrompt";
 import { useTimer } from "@/hooks/useTimer";
 import { getCyclePhase, getDefaultPhase, type CyclePhase } from "@/lib/cycle";
 import { getLastPeriod, getCycleLength, getCompletedPomodoros, incrementPomodoros, getMenstruates } from "@/lib/storage";
@@ -99,6 +102,7 @@ const Index = () => {
           <h1 className="font-display text-2xl text-foreground">{t("app.name")}</h1>
         </div>
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <LanguageSwitcher />
           <button
             onClick={() => setShowSetup(!showSetup)}
@@ -177,6 +181,8 @@ const Index = () => {
             <WeeklyHistory />
           </motion.div>
 
+          <MonthlyStats />
+
           <HelpSection />
         </div>
       </div>
@@ -192,6 +198,8 @@ const Index = () => {
         completed={completed}
         recommended={phase.recommendedPomodoros}
       />
+
+      <InstallPrompt />
     </div>
   );
 };
