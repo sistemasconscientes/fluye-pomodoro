@@ -194,7 +194,7 @@ const Index = () => {
           <TimerControls isRunning={isRunning} mode={mode} onPlay={play} onPause={pause} onReset={reset} onSkipBreak={skipBreak} />
 
           <div className="w-full">
-            <TaskList />
+            <TaskList key={tasksVersion} onTasksChange={refreshTasks} />
           </div>
         </div>
 

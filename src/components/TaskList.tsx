@@ -22,7 +22,7 @@ function saveTasks(tasks: Task[]) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
 }
 
-const TaskList = () => {
+const TaskList = ({ onTasksChange }: { onTasksChange?: () => void }) => {
   const { t } = useI18n();
   const [tasks, setTasks] = useState<Task[]>(loadTasks);
   const [newTask, setNewTask] = useState("");
