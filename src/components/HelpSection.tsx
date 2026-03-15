@@ -1,4 +1,8 @@
+import { useState } from "react";
+import { ChevronDown, HelpCircle } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
+import { getWeeklyHistory } from "@/lib/history";
 
 const steps = [
   { num: 1, emoji: "🎚️" },
@@ -7,17 +11,48 @@ const steps = [
   { num: 4, emoji: "📊" },
 ];
 
+function hasCompletedAnyPomodoro(): boolean {
+  const history = getWeeklyHistory();
+  return history.some((d) => d.count > 0);
+}
+
 const HelpSection = () => {
   const { t } = useI18n();
+  const [open, setOpen] = useState(() => !hasCompletedAnyPomodoro());
+
+  if (!open) {
+    return (
+      <button
+        onClick={() => setOpen(true)}
+        className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
+      >
+        <HelpCircle size={16} />
+        <span>{t("help.showGuide")}</span>
+      </button>
+    );
+  }
 
   return (
-    <div className="rounded-2xl bg-secondary/40 p-6 space-y-6">
-      {/* Title + intro */}
-      <div>
-        <h2 className="font-display text-lg text-foreground">{t("help.title")}</h2>
-        <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">
-          {t("help.intro")}
-        </p>
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="rounded-2xl bg-secondary/40 p-6 space-y-6"
+    >
+      {/* Header with close */}
+      <div className="flex items-start justify-between">
+        <div>
+          <h2 className="font-display text-lg text-foreground">{t("help.title")}</h2>
+          <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">
+            {t("help.intro")}
+          </p>
+        </div>
+        <button
+          onClick={() => setOpen(false)}
+          className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors shrink-0 ml-4 mt-1"
+        >
+          <ChevronDown size={14} className="rotate-180" />
+          <span>{t("help.hideGuide")}</span>
+        </button>
       </div>
 
       {/* What is a pomodoro */}
@@ -69,7 +104,7 @@ const HelpSection = () => {
           {t("help.proTip")}
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
