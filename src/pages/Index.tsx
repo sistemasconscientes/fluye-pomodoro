@@ -198,6 +198,8 @@ const Index = () => {
         completed={completed}
         recommended={phase.recommendedPomodoros}
       />
+
+      <InstallPrompt />
     </div>
   );
 };
