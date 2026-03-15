@@ -181,6 +181,8 @@ const Index = () => {
             <WeeklyHistory />
           </motion.div>
 
+          <MonthlyStats />
+
           <HelpSection />
         </div>
       </div>
