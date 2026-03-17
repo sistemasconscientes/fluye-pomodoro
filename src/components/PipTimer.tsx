@@ -317,7 +317,7 @@ const PipTimer = ({ timeLeft, isRunning, onPlay, onPause, tasks, onToggleTask }:
   return (
     <>
       <button
-        onClick={pipWindow || showFloating ? closePip : openPip}
+        onClick={showFloating ? closePip : openPip}
         className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-muted-foreground transition-colors hover:bg-secondary/80"
         aria-label={t("pip.toggle")}
         title={t("pip.toggle")}
@@ -325,11 +325,7 @@ const PipTimer = ({ timeLeft, isRunning, onPlay, onPause, tasks, onToggleTask }:
         <PictureInPicture2 size={18} />
       </button>
 
-      {/* Document PiP portal */}
-      {pipWindow && pipContainerRef.current && createPortal(pipContent, pipContainerRef.current)}
-
-      {/* Floating fallback */}
-      {showFloating && !pipWindow && (
+      {showFloating && (
         <FloatingMini
           timeLeft={timeLeft}
           isRunning={isRunning}
