@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import { createPortal } from "react-dom";
+import { useState, useEffect, useCallback } from "react";
 import { Play, Pause, ChevronUp, ChevronDown, Check, PictureInPicture2, X } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 
