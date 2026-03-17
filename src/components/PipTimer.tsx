@@ -211,57 +211,15 @@ const FloatingMini = ({
 
 const PipTimer = ({ timeLeft, isRunning, onPlay, onPause, tasks, onToggleTask }: PipTimerProps) => {
   const { t } = useI18n();
-  const [pipWindow, setPipWindow] = useState<Window | null>(null);
   const [showFloating, setShowFloating] = useState(false);
-  const pipContainerRef = useRef<HTMLDivElement | null>(null);
-  const [taskIndex, setTaskIndex] = useState(0);
-  const [confirmingId, setConfirmingId] = useState<string | null>(null);
 
-  const pendingTasks = tasks.filter((t) => !t.done);
-
-  const supportsDocPip = "documentPictureInPicture" in window;
-
-  const openPip = useCallback(async () => {
-    if (supportsDocPip) {
-      try {
-        const pip = await (window as any).documentPictureInPicture.requestWindow({
-          width: 340,
-          height: 48,
-        });
-        // Inject styles
-        const style = pip.document.createElement("style");
-        style.textContent = pipStyles;
-        pip.document.head.appendChild(style);
-
-        // Create mount point
-        const container = pip.document.createElement("div");
-        container.id = "pip-root";
-        pip.document.body.appendChild(container);
-
-        pipContainerRef.current = container;
-        setPipWindow(pip);
-
-        pip.addEventListener("pagehide", () => {
-          setPipWindow(null);
-          pipContainerRef.current = null;
-        });
-      } catch {
-        // Fallback to floating
-        setShowFloating(true);
-      }
-    } else {
-      setShowFloating(true);
-    }
-  }, [supportsDocPip]);
+  const openPip = useCallback(() => {
+    setShowFloating(true);
+  }, []);
 
   const closePip = useCallback(() => {
-    if (pipWindow) {
-      pipWindow.close();
-      setPipWindow(null);
-      pipContainerRef.current = null;
-    }
     setShowFloating(false);
-  }, [pipWindow]);
+  }, []);
 
   // Keep task index in bounds
   useEffect(() => {
