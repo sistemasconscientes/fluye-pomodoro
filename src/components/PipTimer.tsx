@@ -37,40 +37,31 @@ const pipStyles = `
     color: #e0e0e0;
     display: flex;
     align-items: center;
-    justify-content: center;
     height: 100vh;
     overflow: hidden;
     user-select: none;
   }
   .pip-container {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 8px 12px;
+    gap: 8px;
+    padding: 4px 10px;
     width: 100%;
-  }
-  .pip-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    justify-content: center;
   }
   .pip-time {
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
-    letter-spacing: -1px;
+    letter-spacing: -0.5px;
     color: #ffffff;
+    flex-shrink: 0;
   }
   .pip-btn-play {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     border: none;
     cursor: pointer;
@@ -83,30 +74,34 @@ const pipStyles = `
   .pip-icon-btn {
     background: none;
     border: none;
-    color: #888;
+    color: #666;
     cursor: pointer;
-    padding: 2px;
+    padding: 0;
     display: flex;
     align-items: center;
     transition: color 0.15s;
+    flex-shrink: 0;
   }
-  .pip-icon-btn:hover { color: #ccc; }
-  .pip-icon-btn:disabled { color: #444; cursor: default; }
-  .pip-task-row {
+  .pip-icon-btn:hover { color: #aaa; }
+  .pip-icon-btn:disabled { color: #333; cursor: default; }
+  .pip-sep {
+    width: 1px;
+    height: 16px;
+    background: rgba(255,255,255,0.12);
+    flex-shrink: 0;
+  }
+  .pip-task-group {
     display: flex;
     align-items: center;
-    gap: 6px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 8px;
-    padding: 5px 10px;
-    width: 100%;
-    max-width: 300px;
+    gap: 5px;
+    min-width: 0;
+    flex: 1;
   }
   .pip-btn-check {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     border-radius: 3px;
-    border: 1.5px solid rgba(255,255,255,0.3);
+    border: 1.5px solid rgba(255,255,255,0.25);
     background: transparent;
     color: transparent;
     cursor: pointer;
@@ -123,18 +118,15 @@ const pipStyles = `
   }
   .pip-task-text {
     flex: 1;
-    font-size: 12px;
-    color: #ccc;
+    font-size: 11px;
+    color: #aaa;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-  .pip-task-text.done {
-    text-decoration: line-through;
-    color: #666;
+    min-width: 0;
   }
   .pip-no-tasks {
-    font-size: 11px;
+    font-size: 10px;
     color: #555;
   }
   .pip-confirm {
@@ -148,27 +140,27 @@ const pipStyles = `
   }
   .pip-confirm-box {
     background: #2a2a3e;
-    border-radius: 10px;
-    padding: 12px 16px;
+    border-radius: 8px;
+    padding: 10px 14px;
     text-align: center;
-    max-width: 200px;
+    max-width: 180px;
   }
   .pip-confirm-box p {
-    font-size: 12px;
-    margin-bottom: 10px;
+    font-size: 11px;
+    margin-bottom: 8px;
     color: #ddd;
   }
   .pip-confirm-btns {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     justify-content: center;
   }
   .pip-confirm-btns button {
-    padding: 5px 14px;
+    padding: 4px 12px;
     border-radius: 6px;
     border: none;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 11px;
   }
   .pip-confirm-yes {
     background: #7c3aed;
