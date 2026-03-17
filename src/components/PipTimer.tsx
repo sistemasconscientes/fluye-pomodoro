@@ -212,7 +212,9 @@ const FloatingMini = ({
 const PipTimer = ({ timeLeft, isRunning, onPlay, onPause, tasks, onToggleTask }: PipTimerProps) => {
   const { t } = useI18n();
   const [showFloating, setShowFloating] = useState(false);
-
+  const [taskIndex, setTaskIndex] = useState(0);
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
+  const pendingTasks = tasks.filter((t) => !t.done);
   const openPip = useCallback(() => {
     setShowFloating(true);
   }, []);
