@@ -226,8 +226,8 @@ const PipTimer = ({ timeLeft, isRunning, onPlay, onPause, tasks, onToggleTask }:
     if (supportsDocPip) {
       try {
         const pip = await (window as any).documentPictureInPicture.requestWindow({
-          width: 300,
-          height: 120,
+          width: 340,
+          height: 48,
         });
         // Inject styles
         const style = pip.document.createElement("style");
