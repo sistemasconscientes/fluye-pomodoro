@@ -46,57 +46,74 @@ const pipStyles = `
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 12px;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 12px;
     width: 100%;
   }
-  .pip-time {
-    font-size: 48px;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -2px;
-    color: #ffffff;
-  }
-  .pip-controls {
+  .pip-row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
   }
-  .pip-btn {
+  .pip-time {
+    font-size: 28px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -1px;
+    color: #ffffff;
+  }
+  .pip-btn-play {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    transition: opacity 0.15s;
-  }
-  .pip-btn:hover { opacity: 0.85; }
-  .pip-btn-play {
     background: #7c3aed;
     color: white;
-    width: 48px;
-    height: 48px;
+    transition: opacity 0.15s;
+    flex-shrink: 0;
   }
-  .pip-btn-nav {
-    background: rgba(255,255,255,0.1);
-    color: #ccc;
-    width: 28px;
-    height: 28px;
+  .pip-btn-play:hover { opacity: 0.85; }
+  .pip-icon-btn {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    transition: color 0.15s;
+  }
+  .pip-icon-btn:hover { color: #ccc; }
+  .pip-icon-btn:disabled { color: #444; cursor: default; }
+  .pip-task-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 5px 10px;
+    width: 100%;
+    max-width: 300px;
   }
   .pip-btn-check {
-    width: 22px;
-    height: 22px;
-    border-radius: 4px;
-    border: 2px solid rgba(255,255,255,0.3);
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    border: 1.5px solid rgba(255,255,255,0.3);
     background: transparent;
     color: transparent;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     transition: all 0.15s;
   }
   .pip-btn-check.checked {
@@ -104,36 +121,21 @@ const pipStyles = `
     border-color: #7c3aed;
     color: white;
   }
-  .pip-task {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 10px;
-    padding: 8px 12px;
-    width: 100%;
-    max-width: 280px;
-  }
   .pip-task-text {
     flex: 1;
-    font-size: 13px;
-    color: #ddd;
+    font-size: 12px;
+    color: #ccc;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
   .pip-task-text.done {
     text-decoration: line-through;
-    color: #888;
-  }
-  .pip-task-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+    color: #666;
   }
   .pip-no-tasks {
-    font-size: 12px;
-    color: #666;
+    font-size: 11px;
+    color: #555;
   }
   .pip-confirm {
     position: fixed;
@@ -146,14 +148,14 @@ const pipStyles = `
   }
   .pip-confirm-box {
     background: #2a2a3e;
-    border-radius: 12px;
-    padding: 16px 20px;
+    border-radius: 10px;
+    padding: 12px 16px;
     text-align: center;
-    max-width: 220px;
+    max-width: 200px;
   }
   .pip-confirm-box p {
-    font-size: 13px;
-    margin-bottom: 12px;
+    font-size: 12px;
+    margin-bottom: 10px;
     color: #ddd;
   }
   .pip-confirm-btns {
@@ -162,11 +164,11 @@ const pipStyles = `
     justify-content: center;
   }
   .pip-confirm-btns button {
-    padding: 6px 16px;
-    border-radius: 8px;
+    padding: 5px 14px;
+    border-radius: 6px;
     border: none;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 12px;
   }
   .pip-confirm-yes {
     background: #7c3aed;
