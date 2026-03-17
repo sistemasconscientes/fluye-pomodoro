@@ -46,57 +46,74 @@ const pipStyles = `
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 12px;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 12px;
     width: 100%;
   }
-  .pip-time {
-    font-size: 48px;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -2px;
-    color: #ffffff;
-  }
-  .pip-controls {
+  .pip-row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
   }
-  .pip-btn {
+  .pip-time {
+    font-size: 28px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -1px;
+    color: #ffffff;
+  }
+  .pip-btn-play {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    transition: opacity 0.15s;
-  }
-  .pip-btn:hover { opacity: 0.85; }
-  .pip-btn-play {
     background: #7c3aed;
     color: white;
-    width: 48px;
-    height: 48px;
+    transition: opacity 0.15s;
+    flex-shrink: 0;
   }
-  .pip-btn-nav {
-    background: rgba(255,255,255,0.1);
-    color: #ccc;
-    width: 28px;
-    height: 28px;
+  .pip-btn-play:hover { opacity: 0.85; }
+  .pip-icon-btn {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    transition: color 0.15s;
+  }
+  .pip-icon-btn:hover { color: #ccc; }
+  .pip-icon-btn:disabled { color: #444; cursor: default; }
+  .pip-task-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 5px 10px;
+    width: 100%;
+    max-width: 300px;
   }
   .pip-btn-check {
-    width: 22px;
-    height: 22px;
-    border-radius: 4px;
-    border: 2px solid rgba(255,255,255,0.3);
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    border: 1.5px solid rgba(255,255,255,0.3);
     background: transparent;
     color: transparent;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     transition: all 0.15s;
   }
   .pip-btn-check.checked {
@@ -104,36 +121,21 @@ const pipStyles = `
     border-color: #7c3aed;
     color: white;
   }
-  .pip-task {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 10px;
-    padding: 8px 12px;
-    width: 100%;
-    max-width: 280px;
-  }
   .pip-task-text {
     flex: 1;
-    font-size: 13px;
-    color: #ddd;
+    font-size: 12px;
+    color: #ccc;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
   .pip-task-text.done {
     text-decoration: line-through;
-    color: #888;
-  }
-  .pip-task-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+    color: #666;
   }
   .pip-no-tasks {
-    font-size: 12px;
-    color: #666;
+    font-size: 11px;
+    color: #555;
   }
   .pip-confirm {
     position: fixed;
@@ -146,14 +148,14 @@ const pipStyles = `
   }
   .pip-confirm-box {
     background: #2a2a3e;
-    border-radius: 12px;
-    padding: 16px 20px;
+    border-radius: 10px;
+    padding: 12px 16px;
     text-align: center;
-    max-width: 220px;
+    max-width: 200px;
   }
   .pip-confirm-box p {
-    font-size: 13px;
-    margin-bottom: 12px;
+    font-size: 12px;
+    margin-bottom: 10px;
     color: #ddd;
   }
   .pip-confirm-btns {
@@ -162,11 +164,11 @@ const pipStyles = `
     justify-content: center;
   }
   .pip-confirm-btns button {
-    padding: 6px 16px;
-    border-radius: 8px;
+    padding: 5px 14px;
+    border-radius: 6px;
     border: none;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 12px;
   }
   .pip-confirm-yes {
     background: #7c3aed;
@@ -232,8 +234,8 @@ const PipTimer = ({ timeLeft, isRunning, onPlay, onPause, tasks, onToggleTask }:
     if (supportsDocPip) {
       try {
         const pip = await (window as any).documentPictureInPicture.requestWindow({
-          width: 320,
-          height: 240,
+          width: 300,
+          height: 120,
         });
         // Inject styles
         const style = pip.document.createElement("style");
@@ -296,49 +298,47 @@ const PipTimer = ({ timeLeft, isRunning, onPlay, onPause, tasks, onToggleTask }:
   // PiP content rendered via portal
   const pipContent = (
     <div className="pip-container">
-      <div className="pip-time">{min}:{sec}</div>
-      <div className="pip-controls">
+      <div className="pip-row">
+        <div className="pip-time">{min}:{sec}</div>
         <button
-          className="pip-btn pip-btn-play"
+          className="pip-btn-play"
           onClick={isRunning ? onPause : onPlay}
         >
           {isRunning ? (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="6" y1="4" x2="6" y2="20"/><line x1="18" y1="4" x2="18" y2="20"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="6" y1="4" x2="6" y2="20"/><line x1="18" y1="4" x2="18" y2="20"/></svg>
           ) : (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
           )}
         </button>
       </div>
 
       {currentTask ? (
-        <div className="pip-task">
+        <div className="pip-task-row">
           <button
             className={`pip-btn-check ${currentTask.done ? "checked" : ""}`}
             onClick={() => handleConfirmComplete(currentTask.id)}
           >
             {currentTask.done && (
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
             )}
           </button>
           <span className={`pip-task-text ${currentTask.done ? "done" : ""}`}>
             {currentTask.text}
           </span>
-          <div className="pip-task-nav">
-            <button
-              className="pip-btn pip-btn-nav"
-              onClick={() => setTaskIndex((i) => Math.max(0, i - 1))}
-              disabled={taskIndex === 0}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="18,15 12,9 6,15"/></svg>
-            </button>
-            <button
-              className="pip-btn pip-btn-nav"
-              onClick={() => setTaskIndex((i) => Math.min(pendingTasks.length - 1, i + 1))}
-              disabled={taskIndex >= pendingTasks.length - 1}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
-            </button>
-          </div>
+          <button
+            className="pip-icon-btn"
+            onClick={() => setTaskIndex((i) => Math.max(0, i - 1))}
+            disabled={taskIndex === 0}
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="18,15 12,9 6,15"/></svg>
+          </button>
+          <button
+            className="pip-icon-btn"
+            onClick={() => setTaskIndex((i) => Math.min(pendingTasks.length - 1, i + 1))}
+            disabled={taskIndex >= pendingTasks.length - 1}
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
+          </button>
         </div>
       ) : (
         <span className="pip-no-tasks">✓ {t("pip.noTasks")}</span>
