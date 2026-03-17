@@ -298,49 +298,47 @@ const PipTimer = ({ timeLeft, isRunning, onPlay, onPause, tasks, onToggleTask }:
   // PiP content rendered via portal
   const pipContent = (
     <div className="pip-container">
-      <div className="pip-time">{min}:{sec}</div>
-      <div className="pip-controls">
+      <div className="pip-row">
+        <div className="pip-time">{min}:{sec}</div>
         <button
-          className="pip-btn pip-btn-play"
+          className="pip-btn-play"
           onClick={isRunning ? onPause : onPlay}
         >
           {isRunning ? (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="6" y1="4" x2="6" y2="20"/><line x1="18" y1="4" x2="18" y2="20"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="6" y1="4" x2="6" y2="20"/><line x1="18" y1="4" x2="18" y2="20"/></svg>
           ) : (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
           )}
         </button>
       </div>
 
       {currentTask ? (
-        <div className="pip-task">
+        <div className="pip-task-row">
           <button
             className={`pip-btn-check ${currentTask.done ? "checked" : ""}`}
             onClick={() => handleConfirmComplete(currentTask.id)}
           >
             {currentTask.done && (
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
             )}
           </button>
           <span className={`pip-task-text ${currentTask.done ? "done" : ""}`}>
             {currentTask.text}
           </span>
-          <div className="pip-task-nav">
-            <button
-              className="pip-btn pip-btn-nav"
-              onClick={() => setTaskIndex((i) => Math.max(0, i - 1))}
-              disabled={taskIndex === 0}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="18,15 12,9 6,15"/></svg>
-            </button>
-            <button
-              className="pip-btn pip-btn-nav"
-              onClick={() => setTaskIndex((i) => Math.min(pendingTasks.length - 1, i + 1))}
-              disabled={taskIndex >= pendingTasks.length - 1}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
-            </button>
-          </div>
+          <button
+            className="pip-icon-btn"
+            onClick={() => setTaskIndex((i) => Math.max(0, i - 1))}
+            disabled={taskIndex === 0}
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="18,15 12,9 6,15"/></svg>
+          </button>
+          <button
+            className="pip-icon-btn"
+            onClick={() => setTaskIndex((i) => Math.min(pendingTasks.length - 1, i + 1))}
+            disabled={taskIndex >= pendingTasks.length - 1}
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
+          </button>
         </div>
       ) : (
         <span className="pip-no-tasks">✓ {t("pip.noTasks")}</span>
