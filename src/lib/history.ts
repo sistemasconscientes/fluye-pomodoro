@@ -45,7 +45,7 @@ export function getMonthlyHistory(): DayRecord[] {
   for (let i = 29; i >= 0; i--) {
     const d = new Date(today);
     d.setDate(today.getDate() - i);
-    const dateStr = d.toISOString().split("T")[0];
+    const dateStr = toLocalDateStr(d);
     const existing = history.find((h) => h.date === dateStr);
     days.push({ date: dateStr, count: existing?.count ?? 0 });
   }
