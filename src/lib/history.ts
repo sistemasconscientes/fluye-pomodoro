@@ -68,7 +68,7 @@ export function getStreak(): number {
   for (let i = 0; i < 365; i++) {
     const d = new Date(today);
     d.setDate(today.getDate() - i);
-    const dateStr = d.toISOString().split("T")[0];
+    const dateStr = toLocalDateStr(d);
     const record = history.find((h) => h.date === dateStr);
     if (record && record.count > 0) {
       streak++;
