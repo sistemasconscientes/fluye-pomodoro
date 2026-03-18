@@ -1,3 +1,5 @@
+import { toLocalDateStr } from "@/lib/utils";
+
 const HISTORY_KEY = "fluye_history";
 
 export interface DayRecord {
