@@ -29,7 +29,7 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
       if (date) {
         setLastPeriod(date);
       } else {
-        setLastPeriod(new Date().toISOString().split("T")[0]);
+        setLastPeriod(toLocalDateStr());
       }
       if (regularity) setRegularity(regularity);
     } else {
