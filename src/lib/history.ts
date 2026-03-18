@@ -97,7 +97,7 @@ export function recordPomodoro(): void {
     history = [];
   }
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = toLocalDateStr();
   const idx = history.findIndex((h) => h.date === today);
   if (idx >= 0) {
     history[idx].count += 1;
