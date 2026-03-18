@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Moon, HelpCircle, X } from "lucide-react";
 import { setLastPeriod, setRegularity, setMenstruates, type CycleRegularity } from "@/lib/storage";
+import { toLocalDateStr } from "@/lib/utils";
 import { setFeeling, type FeelingLevel } from "@/lib/feeling";
 import { useI18n } from "@/lib/i18n";
 import RegularitySelector from "@/components/RegularitySelector";
