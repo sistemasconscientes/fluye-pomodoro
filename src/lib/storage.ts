@@ -1,3 +1,5 @@
+import { toLocalDateStr } from "@/lib/utils";
+
 const KEYS = {
   LAST_PERIOD: "fluye_last_period",
   CYCLE_LENGTH: "fluye_cycle_length",
@@ -55,7 +57,7 @@ export function setRegularity(regularity: CycleRegularity) {
 
 export function getCompletedPomodoros(): number {
   const savedDate = localStorage.getItem(KEYS.POMODOROS_DATE);
-  const today = new Date().toISOString().split("T")[0];
+  const today = toLocalDateStr();
   if (savedDate !== today) {
     localStorage.setItem(KEYS.POMODOROS_DATE, today);
     localStorage.setItem(KEYS.POMODOROS_TODAY, "0");
@@ -65,7 +67,7 @@ export function getCompletedPomodoros(): number {
 }
 
 export function incrementPomodoros(): number {
-  const today = new Date().toISOString().split("T")[0];
+  const today = toLocalDateStr();
   localStorage.setItem(KEYS.POMODOROS_DATE, today);
   const current = getCompletedPomodoros();
   const next = current + 1;

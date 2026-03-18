@@ -1,3 +1,5 @@
+import { toLocalDateStr } from "@/lib/utils";
+
 export type FeelingLevel = "very_low" | "low" | "medium" | "high" | "very_high";
 
 export interface FeelingOption {
@@ -49,13 +51,13 @@ export const FEELING_OPTIONS: FeelingOption[] = [
 export function getFeeling(): FeelingLevel | null {
   const saved = localStorage.getItem("fluye_feeling");
   const savedDate = localStorage.getItem("fluye_feeling_date");
-  const today = new Date().toISOString().split("T")[0];
+  const today = toLocalDateStr();
   if (savedDate !== today || !saved) return null;
   return saved as FeelingLevel;
 }
 
 export function setFeeling(level: FeelingLevel) {
-  const today = new Date().toISOString().split("T")[0];
+  const today = toLocalDateStr();
   localStorage.setItem("fluye_feeling", level);
   localStorage.setItem("fluye_feeling_date", today);
 }

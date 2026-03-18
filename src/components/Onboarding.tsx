@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Moon, HelpCircle, X } from "lucide-react";
 import { setLastPeriod, setRegularity, setMenstruates, type CycleRegularity } from "@/lib/storage";
+import { toLocalDateStr } from "@/lib/utils";
 import { setFeeling, type FeelingLevel } from "@/lib/feeling";
 import { useI18n } from "@/lib/i18n";
 import RegularitySelector from "@/components/RegularitySelector";
@@ -28,7 +29,7 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
       if (date) {
         setLastPeriod(date);
       } else {
-        setLastPeriod(new Date().toISOString().split("T")[0]);
+        setLastPeriod(toLocalDateStr());
       }
       if (regularity) setRegularity(regularity);
     } else {
@@ -41,7 +42,7 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
 
   const handleSkip = () => {
     setMenstruates(false);
-    setLastPeriod(new Date().toISOString().split("T")[0]);
+    setLastPeriod(toLocalDateStr());
     setRegularity("regular");
     localStorage.setItem("fluye_onboarded", "true");
     onComplete();

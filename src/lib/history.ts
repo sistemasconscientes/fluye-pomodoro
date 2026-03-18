@@ -1,3 +1,5 @@
+import { toLocalDateStr } from "@/lib/utils";
+
 const HISTORY_KEY = "fluye_history";
 
 export interface DayRecord {
@@ -20,7 +22,7 @@ export function getWeeklyHistory(): DayRecord[] {
   for (let i = 6; i >= 0; i--) {
     const d = new Date(today);
     d.setDate(today.getDate() - i);
-    const dateStr = d.toISOString().split("T")[0];
+    const dateStr = toLocalDateStr(d);
     const existing = history.find((h) => h.date === dateStr);
     days.push({ date: dateStr, count: existing?.count ?? 0 });
   }
@@ -43,7 +45,7 @@ export function getMonthlyHistory(): DayRecord[] {
   for (let i = 29; i >= 0; i--) {
     const d = new Date(today);
     d.setDate(today.getDate() - i);
-    const dateStr = d.toISOString().split("T")[0];
+    const dateStr = toLocalDateStr(d);
     const existing = history.find((h) => h.date === dateStr);
     days.push({ date: dateStr, count: existing?.count ?? 0 });
   }
@@ -66,7 +68,7 @@ export function getStreak(): number {
   for (let i = 0; i < 365; i++) {
     const d = new Date(today);
     d.setDate(today.getDate() - i);
-    const dateStr = d.toISOString().split("T")[0];
+    const dateStr = toLocalDateStr(d);
     const record = history.find((h) => h.date === dateStr);
     if (record && record.count > 0) {
       streak++;
@@ -95,7 +97,7 @@ export function recordPomodoro(): void {
     history = [];
   }
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = toLocalDateStr();
   const idx = history.findIndex((h) => h.date === today);
   if (idx >= 0) {
     history[idx].count += 1;
@@ -106,7 +108,7 @@ export function recordPomodoro(): void {
   // Keep only last 30 days
   const cutoff = new Date();
   cutoff.setDate(cutoff.getDate() - 30);
-  const cutoffStr = cutoff.toISOString().split("T")[0];
+  const cutoffStr = toLocalDateStr(cutoff);
   history = history.filter((h) => h.date >= cutoffStr);
 
   localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
