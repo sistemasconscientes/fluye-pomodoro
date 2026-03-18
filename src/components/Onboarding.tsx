@@ -42,7 +42,7 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
 
   const handleSkip = () => {
     setMenstruates(false);
-    setLastPeriod(new Date().toISOString().split("T")[0]);
+    setLastPeriod(toLocalDateStr());
     setRegularity("regular");
     localStorage.setItem("fluye_onboarded", "true");
     onComplete();

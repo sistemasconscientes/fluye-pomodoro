@@ -57,7 +57,7 @@ export function getFeeling(): FeelingLevel | null {
 }
 
 export function setFeeling(level: FeelingLevel) {
-  const today = new Date().toISOString().split("T")[0];
+  const today = toLocalDateStr();
   localStorage.setItem("fluye_feeling", level);
   localStorage.setItem("fluye_feeling_date", today);
 }

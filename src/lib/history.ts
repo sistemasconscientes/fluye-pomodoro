@@ -108,7 +108,7 @@ export function recordPomodoro(): void {
   // Keep only last 30 days
   const cutoff = new Date();
   cutoff.setDate(cutoff.getDate() - 30);
-  const cutoffStr = cutoff.toISOString().split("T")[0];
+  const cutoffStr = toLocalDateStr(cutoff);
   history = history.filter((h) => h.date >= cutoffStr);
 
   localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
