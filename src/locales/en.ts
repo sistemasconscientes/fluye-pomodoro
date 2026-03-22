@@ -228,6 +228,8 @@ const en: Dict = {
   "notFound.title": "404",
   "notFound.message": "Oops! Page not found",
   "notFound.back": "Return to Home",
+  "dayChanged.title": "🌅 New day!",
+  "dayChanged.description": "Your pomodoro counter has been reset. Let's go!",
 };
 
 export default en;

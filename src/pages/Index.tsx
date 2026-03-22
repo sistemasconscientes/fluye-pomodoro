@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { Settings } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import CircularTimer from "@/components/CircularTimer";
@@ -24,6 +24,7 @@ import { recordPomodoro } from "@/lib/history";
 import { playCompletionSound } from "@/lib/sound";
 import { useI18n, PHASE_KEY_MAP } from "@/lib/i18n";
 import { toast } from "sonner";
+import { toLocalDateStr } from "@/lib/utils";
 
 const Index = () => {
   const { t } = useI18n();
@@ -69,20 +70,32 @@ const Index = () => {
     }
   }, []);
 
+  const lastSeenDateRef = useRef(toLocalDateStr());
+
   useEffect(() => {
     refreshPhase();
     setCompleted(getCompletedPomodoros());
 
     const handleVisibility = () => {
       if (document.visibilityState === "visible") {
+        const today = toLocalDateStr();
+        const dayChanged = lastSeenDateRef.current !== today;
+        lastSeenDateRef.current = today;
+
         refreshPhase();
         setCompleted(getCompletedPomodoros());
         setHistoryKey((k) => k + 1);
+
+        if (dayChanged) {
+          toast(t("dayChanged.title"), {
+            description: t("dayChanged.description"),
+          });
+        }
       }
     };
     document.addEventListener("visibilitychange", handleVisibility);
     return () => document.removeEventListener("visibilitychange", handleVisibility);
-  }, [refreshPhase]);
+  }, [refreshPhase, t]);
 
   const handleComplete = useCallback(() => {
     const newCount = incrementPomodoros();
