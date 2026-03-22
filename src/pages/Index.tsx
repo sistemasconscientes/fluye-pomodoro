@@ -20,7 +20,7 @@ import InstallPrompt from "@/components/InstallPrompt";
 import { useTimer } from "@/hooks/useTimer";
 import { getCyclePhase, getDefaultPhase, type CyclePhase } from "@/lib/cycle";
 import { getLastPeriod, getCycleLength, getCompletedPomodoros, incrementPomodoros, getMenstruates } from "@/lib/storage";
-import { recordPomodoro } from "@/lib/history";
+import { recordPomodoro, getPreviousBestDay } from "@/lib/history";
 import { playCompletionSound } from "@/lib/sound";
 import { useI18n, PHASE_KEY_MAP } from "@/lib/i18n";
 import { toast } from "sonner";
@@ -98,13 +98,23 @@ const Index = () => {
   }, [refreshPhase, t]);
 
   const handleComplete = useCallback(() => {
+    const previousBest = getPreviousBestDay();
     const newCount = incrementPomodoros();
     recordPomodoro();
     setCompleted(newCount);
     setShowCompleteDialog(true);
     setHistoryKey((k) => k + 1);
     playCompletionSound();
-  }, []);
+
+    if (previousBest > 0 && newCount > previousBest) {
+      setTimeout(() => {
+        toast(t("stats.newRecord.title"), {
+          description: t("stats.newRecord.description", { count: newCount }),
+          duration: 5000,
+        });
+      }, 500);
+    }
+  }, [t]);
 
   const notificationTexts = {
     workCompleteTitle: t("notification.workComplete.title"),
