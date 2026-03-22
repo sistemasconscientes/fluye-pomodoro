@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { Settings } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import CircularTimer from "@/components/CircularTimer";
