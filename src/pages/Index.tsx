@@ -24,6 +24,7 @@ import { recordPomodoro } from "@/lib/history";
 import { playCompletionSound } from "@/lib/sound";
 import { useI18n, PHASE_KEY_MAP } from "@/lib/i18n";
 import { toast } from "sonner";
+import { toLocalDateStr } from "@/lib/utils";
 
 const Index = () => {
   const { t } = useI18n();

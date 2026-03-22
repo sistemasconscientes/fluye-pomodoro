@@ -228,6 +228,8 @@ const pt: Dict = {
   "notFound.title": "404",
   "notFound.message": "Ops! Página não encontrada",
   "notFound.back": "Voltar ao início",
+  "dayChanged.title": "🌅 Novo dia!",
+  "dayChanged.description": "Seu contador de pomodoros foi reiniciado. Vamos lá!",
 };
 
 export default pt;
