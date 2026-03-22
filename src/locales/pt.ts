@@ -210,6 +210,9 @@ const pt: Dict = {
   "stats.dailyAvg": "Média diária",
   "stats.monthTotal": "Este mês",
   "stats.last30": "Últimos 30 dias",
+  "stats.focusHours": "Horas de foco",
+  "stats.bestDay": "Melhor dia",
+  "stats.activeDays": "Dias ativos",
 
   // Install prompt
   "install.title": "Instale o Fluye no seu dispositivo",
