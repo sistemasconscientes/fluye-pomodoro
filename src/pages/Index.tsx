@@ -72,6 +72,16 @@ const Index = () => {
   useEffect(() => {
     refreshPhase();
     setCompleted(getCompletedPomodoros());
+
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") {
+        refreshPhase();
+        setCompleted(getCompletedPomodoros());
+        setHistoryKey((k) => k + 1);
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => document.removeEventListener("visibilitychange", handleVisibility);
   }, [refreshPhase]);
 
   const handleComplete = useCallback(() => {
