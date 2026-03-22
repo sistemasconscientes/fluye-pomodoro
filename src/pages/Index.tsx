@@ -69,20 +69,32 @@ const Index = () => {
     }
   }, []);
 
+  const lastSeenDateRef = useRef(toLocalDateStr());
+
   useEffect(() => {
     refreshPhase();
     setCompleted(getCompletedPomodoros());
 
     const handleVisibility = () => {
       if (document.visibilityState === "visible") {
+        const today = toLocalDateStr();
+        const dayChanged = lastSeenDateRef.current !== today;
+        lastSeenDateRef.current = today;
+
         refreshPhase();
         setCompleted(getCompletedPomodoros());
         setHistoryKey((k) => k + 1);
+
+        if (dayChanged) {
+          toast(t("dayChanged.title"), {
+            description: t("dayChanged.description"),
+          });
+        }
       }
     };
     document.addEventListener("visibilitychange", handleVisibility);
     return () => document.removeEventListener("visibilitychange", handleVisibility);
-  }, [refreshPhase]);
+  }, [refreshPhase, t]);
 
   const handleComplete = useCallback(() => {
     const newCount = incrementPomodoros();
