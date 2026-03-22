@@ -88,6 +88,22 @@ export function getMonthlyAverage(): number {
   return total / daysWithData.length;
 }
 
+/** Returns the previous best day count (excluding today) */
+export function getPreviousBestDay(): number {
+  const raw = localStorage.getItem(HISTORY_KEY);
+  let history: DayRecord[] = [];
+  try {
+    history = raw ? JSON.parse(raw) : [];
+  } catch {
+    history = [];
+  }
+  const today = toLocalDateStr();
+  const pastDays = history.filter((h) => h.date !== today);
+  if (pastDays.length === 0) return 0;
+  return Math.max(...pastDays.map((d) => d.count));
+}
+
+
 export function recordPomodoro(): void {
   const raw = localStorage.getItem(HISTORY_KEY);
   let history: DayRecord[] = [];

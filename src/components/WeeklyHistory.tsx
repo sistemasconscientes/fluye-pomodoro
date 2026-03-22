@@ -1,7 +1,14 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
+import { Info } from "lucide-react";
 import { getWeeklyHistory } from "@/lib/history";
 import { useI18n } from "@/lib/i18n";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const WeeklyHistory = () => {
   const { t } = useI18n();
@@ -11,7 +18,19 @@ const WeeklyHistory = () => {
 
   return (
     <div className="rounded-2xl bg-secondary/50 p-5">
-      <h3 className="font-display text-base text-foreground mb-3">{t("history.title")}</h3>
+      <TooltipProvider delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <h3 className="font-display text-base text-foreground mb-3 cursor-help inline-flex items-center gap-1.5">
+              {t("history.title")}
+              <Info size={12} className="text-muted-foreground/40" />
+            </h3>
+          </TooltipTrigger>
+          <TooltipContent side="top" className="max-w-[220px] text-xs">
+            {t("history.tooltip")}
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <div className="flex items-end justify-between gap-2 h-24">
         {days.map((day, i) => {
           const date = new Date(day.date + "T12:00:00");

@@ -213,6 +213,16 @@ const en: Dict = {
   "stats.focusHours": "Focus hours",
   "stats.bestDay": "Best day",
   "stats.activeDays": "Active days",
+  "stats.newRecord.title": "🏆 New personal record!",
+  "stats.newRecord.description": "{{count}} pomodoros today — your best day ever!",
+  "stats.tooltip.streak": "Consecutive days with at least 1 pomodoro completed",
+  "stats.tooltip.dailyAvg": "Average pomodoros per active day in the last 30 days",
+  "stats.tooltip.monthTotal": "Total pomodoros completed in the last 30 days",
+  "stats.tooltip.focusHours": "Estimated focus time based on 25 min per pomodoro",
+  "stats.tooltip.bestDay": "Most pomodoros completed in a single day (last 30 days)",
+  "stats.tooltip.activeDays": "Days with at least 1 pomodoro in the last 30 days",
+  "stats.tooltip.heatmap": "Each square represents a day. Darker = more pomodoros",
+  "history.tooltip": "Your pomodoro count for each of the last 7 days. Today is highlighted",
 
   // Install prompt
   "install.title": "Install Fluye on your device",
