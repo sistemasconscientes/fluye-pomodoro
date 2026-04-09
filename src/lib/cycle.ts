@@ -23,9 +23,49 @@ function resolvePomodoros(phaseName: string): number {
   const feeling = getFeeling();
   if (feeling) {
     const feelingValue = getFeelingPomodoros(feeling);
-    return Math.round((phaseBase + feelingValue) / 2);
+    // Weighted: 60% feeling, 40% phase
+    return Math.round(0.4 * phaseBase + 0.6 * feelingValue);
   }
   return phaseBase;
+}
+
+interface PhaseDefinition {
+  name: string;
+  emoji: string;
+  description: string;
+  /** Proportion of cycle length (sums to 1.0) */
+  proportion: number;
+}
+
+/**
+ * Phases defined as proportions of total cycle length.
+ * Luteal phase is relatively fixed (~14 days), so for longer cycles
+ * the follicular phase stretches. We use proportions based on a 28-day model
+ * then adjust dynamically.
+ */
+function getPhaseRanges(cycleLength: number) {
+  // Luteal phase is biologically fixed at ~14 days
+  const lutealTotal = 14;
+  // Ovulation ~2-3 days
+  const ovulationDays = Math.max(2, Math.round(cycleLength * 0.08));
+  // Menstruation ~5 days, scales slightly
+  const menstruationDays = Math.max(3, Math.min(7, Math.round(cycleLength * 0.18)));
+  // Follicular fills the gap
+  const follicularDays = Math.max(2, cycleLength - menstruationDays - ovulationDays - lutealTotal);
+
+  // Split luteal into 3 sub-phases
+  const lutealEarly = Math.round(lutealTotal * 0.36); // ~5 days
+  const lutealMid = Math.round(lutealTotal * 0.29);   // ~4 days
+  const lutealLate = lutealTotal - lutealEarly - lutealMid; // ~5 days
+
+  return [
+    { name: "Menstruación", emoji: "🌙", description: "Descansa y sé amable contigo", days: menstruationDays },
+    { name: "Folicular", emoji: "🌱", description: "Tu energía crece, aprovéchala", days: follicularDays },
+    { name: "Ovulación", emoji: "🌸", description: "Máxima energía y claridad mental", days: ovulationDays },
+    { name: "Lútea temprana", emoji: "🍂", description: "Aún con buena energía, organiza", days: lutealEarly },
+    { name: "Lútea media", emoji: "🌾", description: "Empieza a bajar el ritmo", days: lutealMid },
+    { name: "Lútea tardía", emoji: "🕯️", description: "Prioriza lo esencial, descansa", days: lutealLate },
+  ];
 }
 
 export function getCyclePhase(lastPeriodDate: string, cycleLength: number): CyclePhase {
@@ -38,72 +78,37 @@ export function getCyclePhase(lastPeriodDate: string, cycleLength: number): Cycl
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
   const dayInCycle = (diffDays % cycleLength) + 1;
 
-  if (dayInCycle >= 1 && dayInCycle <= 5) {
-    return {
-      name: "Menstruación",
-      emoji: "🌙",
-      daysRemaining: 5 - dayInCycle,
-      recommendedPomodoros: resolvePomodoros("Menstruación"),
-      dayInCycle,
-      description: "Descansa y sé amable contigo",
-    };
+  const phases = getPhaseRanges(cycleLength);
+  let cumulative = 0;
+
+  for (const phase of phases) {
+    const start = cumulative + 1;
+    const end = cumulative + phase.days;
+
+    if (dayInCycle >= start && dayInCycle <= end) {
+      return {
+        name: phase.name,
+        emoji: phase.emoji,
+        daysRemaining: end - dayInCycle,
+        recommendedPomodoros: resolvePomodoros(phase.name),
+        dayInCycle,
+        description: phase.description,
+      };
+    }
+    cumulative = end;
   }
 
-  if (dayInCycle >= 6 && dayInCycle <= 13) {
-    return {
-      name: "Folicular",
-      emoji: "🌱",
-      daysRemaining: 13 - dayInCycle,
-      recommendedPomodoros: resolvePomodoros("Folicular"),
-      dayInCycle,
-      description: "Tu energía crece, aprovéchala",
-    };
-  }
-
-  if (dayInCycle >= 14 && dayInCycle <= 16) {
-    return {
-      name: "Ovulación",
-      emoji: "🌸",
-      daysRemaining: 16 - dayInCycle,
-      recommendedPomodoros: resolvePomodoros("Ovulación"),
-      dayInCycle,
-      description: "Máxima energía y claridad mental",
-    };
-  }
-
-  if (dayInCycle >= 17 && dayInCycle <= 21) {
-    return {
-      name: "Lútea temprana",
-      emoji: "🍂",
-      daysRemaining: 21 - dayInCycle,
-      recommendedPomodoros: resolvePomodoros("Lútea temprana"),
-      dayInCycle,
-      description: "Aún con buena energía, organiza",
-    };
-  }
-
-  if (dayInCycle >= 22 && dayInCycle <= 25) {
-    return {
-      name: "Lútea media",
-      emoji: "🌾",
-      daysRemaining: 25 - dayInCycle,
-      recommendedPomodoros: resolvePomodoros("Lútea media"),
-      dayInCycle,
-      description: "Empieza a bajar el ritmo",
-    };
-  }
-
+  // Fallback (shouldn't happen)
+  const lastPhase = phases[phases.length - 1];
   return {
-    name: "Lútea tardía",
-    emoji: "🕯️",
+    name: lastPhase.name,
+    emoji: lastPhase.emoji,
     daysRemaining: cycleLength - dayInCycle,
-    recommendedPomodoros: resolvePomodoros("Lútea tardía"),
+    recommendedPomodoros: resolvePomodoros(lastPhase.name),
     dayInCycle,
-    description: "Prioriza lo esencial, descansa",
+    description: lastPhase.description,
   };
 }
-
-export function getDefaultPhase(): CyclePhase {
   const feeling = getFeeling();
   return {
     name: "Tu ritmo",
