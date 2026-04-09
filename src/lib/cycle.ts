@@ -109,6 +109,8 @@ export function getCyclePhase(lastPeriodDate: string, cycleLength: number): Cycl
     description: lastPhase.description,
   };
 }
+
+export function getDefaultPhase(): CyclePhase {
   const feeling = getFeeling();
   return {
     name: "Tu ritmo",
