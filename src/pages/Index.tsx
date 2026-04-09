@@ -3,7 +3,7 @@ import { Settings } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import CircularTimer from "@/components/CircularTimer";
 import TimerControls from "@/components/TimerControls";
-import PipTimer from "@/components/PipTimer";
+
 import PhaseCard from "@/components/PhaseCard";
 import PhaseRecommendations from "@/components/PhaseRecommendations";
 import CycleSetup from "@/components/CycleSetup";
@@ -36,24 +36,7 @@ const Index = () => {
   const [phase, setPhase] = useState<CyclePhase>(getDefaultPhase());
   const [showCompleteDialog, setShowCompleteDialog] = useState(false);
   const [historyKey, setHistoryKey] = useState(0);
-  const [tasksVersion, setTasksVersion] = useState(0);
-  const [pipTasks, setPipTasks] = useState<{ id: string; text: string; done: boolean }[]>(() => {
-    try { return JSON.parse(localStorage.getItem("fluye_tasks") || "[]"); } catch { return []; }
-  });
-
-  const refreshTasks = useCallback(() => {
-    try { setPipTasks(JSON.parse(localStorage.getItem("fluye_tasks") || "[]")); } catch { setPipTasks([]); }
-  }, []);
-
-  const handlePipToggleTask = useCallback((id: string) => {
-    try {
-      const tasks = JSON.parse(localStorage.getItem("fluye_tasks") || "[]");
-      const updated = tasks.map((t: any) => t.id === id ? { ...t, done: !t.done } : t);
-      localStorage.setItem("fluye_tasks", JSON.stringify(updated));
-      setPipTasks(updated);
-      setTasksVersion((v) => v + 1);
-    } catch {}
-  }, []);
+  
 
   const refreshPhase = useCallback(() => {
     const menstruates = getMenstruates();
@@ -154,14 +137,6 @@ const Index = () => {
           <h1 className="font-display text-2xl text-foreground">{t("app.name")}</h1>
         </div>
         <div className="flex items-center gap-2">
-          <PipTimer
-            timeLeft={timeLeft}
-            isRunning={isRunning}
-            onPlay={play}
-            onPause={pause}
-            tasks={pipTasks}
-            onToggleTask={handlePipToggleTask}
-          />
           <ThemeToggle />
           <LanguageSwitcher />
           <button
@@ -227,7 +202,7 @@ const Index = () => {
           <TimerControls isRunning={isRunning} mode={mode} onPlay={play} onPause={pause} onReset={reset} onSkipBreak={skipBreak} />
 
           <div className="w-full">
-            <TaskList key={tasksVersion} onTasksChange={refreshTasks} />
+            <TaskList />
           </div>
         </div>
 
