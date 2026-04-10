@@ -38,7 +38,8 @@ const Index = () => {
   const [phase, setPhase] = useState<CyclePhase>(getDefaultPhase());
   const [showCompleteDialog, setShowCompleteDialog] = useState(false);
   const [historyKey, setHistoryKey] = useState(0);
-  
+  const [showFeelingDialog, setShowFeelingDialog] = useState(() => getFeeling() === null);
+  const [currentFeeling, setCurrentFeeling] = useState<FeelingLevel | null>(getFeeling());
 
   const refreshPhase = useCallback(() => {
     const menstruates = getMenstruates();
