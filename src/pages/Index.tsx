@@ -213,9 +213,10 @@ const Index = () => {
 
         {/* Right panel: Progress + Recommendations + History + Help */}
         <div className="flex flex-col gap-5">
-          <PhaseCard phase={phase} completed={completed} description={pomodoroDesc} />
-
-          <PhaseRecommendations phase={phase} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <PhaseCard phase={phase} completed={completed} description={pomodoroDesc} />
+            <PhaseRecommendations phase={phase} />
+          </div>
 
           <motion.div key={historyKey} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
             <WeeklyHistory />
