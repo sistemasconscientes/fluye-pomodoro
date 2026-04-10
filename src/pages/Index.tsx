@@ -240,6 +240,35 @@ const Index = () => {
       />
 
       <InstallPrompt />
+
+      {/* Daily feeling dialog */}
+      <AnimatePresence>
+        {showFeelingDialog && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="w-full max-w-md"
+            >
+              <FeelingSelector
+                selected={currentFeeling}
+                onSelect={(level) => {
+                  setFeeling(level);
+                  setCurrentFeeling(level);
+                  setShowFeelingDialog(false);
+                  refreshPhase();
+                }}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
