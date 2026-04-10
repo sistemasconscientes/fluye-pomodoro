@@ -1,5 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { Settings } from "lucide-react";
+import { getFeeling, setFeeling, type FeelingLevel } from "@/lib/feeling";
+import FeelingSelector from "@/components/FeelingSelector";
 import { motion, AnimatePresence } from "framer-motion";
 import CircularTimer from "@/components/CircularTimer";
 import TimerControls from "@/components/TimerControls";
@@ -36,7 +38,8 @@ const Index = () => {
   const [phase, setPhase] = useState<CyclePhase>(getDefaultPhase());
   const [showCompleteDialog, setShowCompleteDialog] = useState(false);
   const [historyKey, setHistoryKey] = useState(0);
-  
+  const [showFeelingDialog, setShowFeelingDialog] = useState(() => getFeeling() === null);
+  const [currentFeeling, setCurrentFeeling] = useState<FeelingLevel | null>(getFeeling());
 
   const refreshPhase = useCallback(() => {
     const menstruates = getMenstruates();
@@ -70,6 +73,8 @@ const Index = () => {
         setHistoryKey((k) => k + 1);
 
         if (dayChanged) {
+          setCurrentFeeling(null);
+          setShowFeelingDialog(true);
           toast(t("dayChanged.title"), {
             description: t("dayChanged.description"),
           });
@@ -235,6 +240,35 @@ const Index = () => {
       />
 
       <InstallPrompt />
+
+      {/* Daily feeling dialog */}
+      <AnimatePresence>
+        {showFeelingDialog && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="w-full max-w-md"
+            >
+              <FeelingSelector
+                selected={currentFeeling}
+                onSelect={(level) => {
+                  setFeeling(level);
+                  setCurrentFeeling(level);
+                  setShowFeelingDialog(false);
+                  refreshPhase();
+                }}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
