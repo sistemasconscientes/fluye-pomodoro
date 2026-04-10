@@ -1,5 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { Settings } from "lucide-react";
+import { getFeeling, setFeeling, type FeelingLevel } from "@/lib/feeling";
+import FeelingSelector from "@/components/FeelingSelector";
 import { motion, AnimatePresence } from "framer-motion";
 import CircularTimer from "@/components/CircularTimer";
 import TimerControls from "@/components/TimerControls";
