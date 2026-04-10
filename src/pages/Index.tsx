@@ -73,6 +73,8 @@ const Index = () => {
         setHistoryKey((k) => k + 1);
 
         if (dayChanged) {
+          setCurrentFeeling(null);
+          setShowFeelingDialog(true);
           toast(t("dayChanged.title"), {
             description: t("dayChanged.description"),
           });
