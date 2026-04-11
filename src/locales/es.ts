@@ -243,6 +243,14 @@ const es: Dict = {
   "notFound.back": "Volver al inicio",
   "dayChanged.title": "🌅 ¡Nuevo día!",
   "dayChanged.description": "Tu contador de pomodoros se ha reiniciado. ¡A darle!",
+
+  // Deeplinks
+  "help.deeplinks.title": "Quick Links (Raycast)",
+  "help.deeplinks.desc": "Usa estas URLs como Quick Links en Raycast o cualquier launcher:",
+  "help.deeplinks.start": "Iniciar timer",
+  "help.deeplinks.phase": "Ver fase actual",
+  "help.deeplinks.setup": "Abrir configuración",
+  "help.deeplinks.feeling": "Registrar energía del día",
 };
 
 export default es;
