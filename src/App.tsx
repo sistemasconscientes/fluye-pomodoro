@@ -19,6 +19,10 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/start" element={<Index deeplink="start" />} />
+            <Route path="/phase" element={<Index deeplink="phase" />} />
+            <Route path="/setup" element={<Index deeplink="setup" />} />
+            <Route path="/feeling" element={<Index deeplink="feeling" />} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>

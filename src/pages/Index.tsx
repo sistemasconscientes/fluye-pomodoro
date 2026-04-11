@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Settings } from "lucide-react";
 import { getFeeling, setFeeling, type FeelingLevel } from "@/lib/feeling";
 import FeelingSelector from "@/components/FeelingSelector";
@@ -28,7 +29,14 @@ import { useI18n, PHASE_KEY_MAP } from "@/lib/i18n";
 import { toast } from "sonner";
 import { toLocalDateStr } from "@/lib/utils";
 
-const Index = () => {
+export type DeeplinkAction = "start" | "phase" | "setup" | "feeling";
+
+interface IndexProps {
+  deeplink?: DeeplinkAction;
+}
+
+const Index = ({ deeplink }: IndexProps) => {
+  const navigate = useNavigate();
   const { t } = useI18n();
   const [onboarded, setOnboarded] = useState(
     () => localStorage.getItem("fluye_onboarded") === "true"
@@ -112,6 +120,29 @@ const Index = () => {
   };
 
   const { timeLeft, totalTime, isRunning, mode, play, pause, reset, skipBreak } = useTimer(handleComplete, notificationTexts);
+
+  // Handle deeplink actions
+  const deeplinkHandled = useRef(false);
+  useEffect(() => {
+    if (!deeplink || deeplinkHandled.current || !onboarded) return;
+    deeplinkHandled.current = true;
+
+    switch (deeplink) {
+      case "start":
+        play();
+        break;
+      case "setup":
+        setShowSetup(true);
+        break;
+      case "feeling":
+        setShowFeelingDialog(true);
+        break;
+      case "phase":
+        // Default view already shows phase
+        break;
+    }
+    navigate("/", { replace: true });
+  }, [deeplink, onboarded, play, navigate]);
 
   if (!onboarded) {
     return (
