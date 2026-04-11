@@ -144,7 +144,7 @@ const Index = ({ deeplink }: IndexProps) => {
     navigate("/", { replace: true });
   }, [deeplink, onboarded, play, navigate]);
 
-
+  if (!onboarded) {
     return (
       <Onboarding
         onComplete={() => {
