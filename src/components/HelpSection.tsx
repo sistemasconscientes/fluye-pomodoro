@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, HelpCircle } from "lucide-react";
+import { ChevronDown, HelpCircle, Copy, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { getWeeklyHistory } from "@/lib/history";
@@ -15,6 +15,30 @@ function hasCompletedAnyPomodoro(): boolean {
   const history = getWeeklyHistory();
   return history.some((d) => d.count > 0);
 }
+
+const DeeplinkRow = ({ url, label }: { url: string; label: string }) => {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+  return (
+    <div className="flex items-center gap-2 text-xs">
+      <code className="rounded bg-secondary px-2 py-0.5 text-foreground font-mono select-all">
+        {url}
+      </code>
+      <button
+        onClick={handleCopy}
+        className="shrink-0 p-1 rounded hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+        title="Copy"
+      >
+        {copied ? <Check size={12} className="text-green-500" /> : <Copy size={12} />}
+      </button>
+      <span className="text-muted-foreground">— {label}</span>
+    </div>
+  );
+};
 
 const HelpSection = () => {
   const { t } = useI18n();
@@ -115,14 +139,12 @@ const HelpSection = () => {
             { path: "/phase", label: t("help.deeplinks.phase") },
             { path: "/setup", label: t("help.deeplinks.setup") },
             { path: "/feeling", label: t("help.deeplinks.feeling") },
-          ].map(({ path, label }) => (
-            <div key={path} className="flex items-center gap-2 text-xs">
-              <code className="rounded bg-secondary px-2 py-0.5 text-foreground font-mono select-all">
-                {window.location.origin}{path}
-              </code>
-              <span className="text-muted-foreground">— {label}</span>
-            </div>
-          ))}
+          ].map(({ path, label }) => {
+            const url = `${window.location.origin}${path}`;
+            return (
+              <DeeplinkRow key={path} url={url} label={label} />
+            );
+          })}
         </div>
       </div>
     </motion.div>
