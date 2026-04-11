@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, HelpCircle } from "lucide-react";
+import { ChevronDown, HelpCircle, Copy, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { getWeeklyHistory } from "@/lib/history";
@@ -115,14 +115,12 @@ const HelpSection = () => {
             { path: "/phase", label: t("help.deeplinks.phase") },
             { path: "/setup", label: t("help.deeplinks.setup") },
             { path: "/feeling", label: t("help.deeplinks.feeling") },
-          ].map(({ path, label }) => (
-            <div key={path} className="flex items-center gap-2 text-xs">
-              <code className="rounded bg-secondary px-2 py-0.5 text-foreground font-mono select-all">
-                {window.location.origin}{path}
-              </code>
-              <span className="text-muted-foreground">— {label}</span>
-            </div>
-          ))}
+          ].map(({ path, label }) => {
+            const url = `${window.location.origin}${path}`;
+            return (
+              <DeeplinkRow key={path} url={url} label={label} />
+            );
+          })}
         </div>
       </div>
     </motion.div>
