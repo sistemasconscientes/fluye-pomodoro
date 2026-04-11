@@ -104,6 +104,27 @@ const HelpSection = () => {
           {t("help.proTip")}
         </p>
       </div>
+
+      {/* Deeplinks / Raycast */}
+      <div className="rounded-xl bg-background/60 p-4 space-y-2">
+        <h3 className="text-sm font-semibold text-foreground">{t("help.deeplinks.title")}</h3>
+        <p className="text-xs text-muted-foreground">{t("help.deeplinks.desc")}</p>
+        <div className="grid gap-1.5 mt-2">
+          {[
+            { path: "/start", label: t("help.deeplinks.start") },
+            { path: "/phase", label: t("help.deeplinks.phase") },
+            { path: "/setup", label: t("help.deeplinks.setup") },
+            { path: "/feeling", label: t("help.deeplinks.feeling") },
+          ].map(({ path, label }) => (
+            <div key={path} className="flex items-center gap-2 text-xs">
+              <code className="rounded bg-secondary px-2 py-0.5 text-foreground font-mono select-all">
+                {window.location.origin}{path}
+              </code>
+              <span className="text-muted-foreground">— {label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </motion.div>
   );
 };

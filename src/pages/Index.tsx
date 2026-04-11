@@ -121,7 +121,30 @@ const Index = ({ deeplink }: IndexProps) => {
 
   const { timeLeft, totalTime, isRunning, mode, play, pause, reset, skipBreak } = useTimer(handleComplete, notificationTexts);
 
-  if (!onboarded) {
+  // Handle deeplink actions
+  const deeplinkHandled = useRef(false);
+  useEffect(() => {
+    if (!deeplink || deeplinkHandled.current || !onboarded) return;
+    deeplinkHandled.current = true;
+
+    switch (deeplink) {
+      case "start":
+        play();
+        break;
+      case "setup":
+        setShowSetup(true);
+        break;
+      case "feeling":
+        setShowFeelingDialog(true);
+        break;
+      case "phase":
+        // Default view already shows phase
+        break;
+    }
+    navigate("/", { replace: true });
+  }, [deeplink, onboarded, play, navigate]);
+
+
     return (
       <Onboarding
         onComplete={() => {
