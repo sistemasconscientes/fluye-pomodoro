@@ -29,7 +29,14 @@ import { useI18n, PHASE_KEY_MAP } from "@/lib/i18n";
 import { toast } from "sonner";
 import { toLocalDateStr } from "@/lib/utils";
 
-const Index = () => {
+export type DeeplinkAction = "start" | "phase" | "setup" | "feeling";
+
+interface IndexProps {
+  deeplink?: DeeplinkAction;
+}
+
+const Index = ({ deeplink }: IndexProps) => {
+  const navigate = useNavigate();
   const { t } = useI18n();
   const [onboarded, setOnboarded] = useState(
     () => localStorage.getItem("fluye_onboarded") === "true"
