@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { Settings } from "lucide-react";
 import { getFeeling, setFeeling, type FeelingLevel } from "@/lib/feeling";
 import FeelingSelector from "@/components/FeelingSelector";
@@ -36,7 +35,6 @@ interface IndexProps {
 }
 
 const Index = ({ deeplink }: IndexProps) => {
-  const navigate = useNavigate();
   const { t } = useI18n();
   const [onboarded, setOnboarded] = useState(
     () => localStorage.getItem("fluye_onboarded") === "true"
@@ -151,8 +149,10 @@ const Index = ({ deeplink }: IndexProps) => {
         // Default view already shows phase
         break;
     }
-    navigate("/", { replace: true });
-  }, [deeplink, onboarded, play, navigate]);
+    // Clean the URL without triggering a route change (which would remount Index
+    // and discard the action we just dispatched).
+    window.history.replaceState(null, "", "/");
+  }, [deeplink, onboarded, play]);
 
   if (!onboarded) {
     return (
