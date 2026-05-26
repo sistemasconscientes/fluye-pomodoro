@@ -70,27 +70,37 @@ const Index = ({ deeplink }: IndexProps) => {
     refreshPhase();
     setCompleted(getCompletedPomodoros());
 
-    const handleVisibility = () => {
-      if (document.visibilityState === "visible") {
-        const today = toLocalDateStr();
-        const dayChanged = lastSeenDateRef.current !== today;
-        lastSeenDateRef.current = today;
+    const checkForDayChange = () => {
+      const today = toLocalDateStr();
+      const dayChanged = lastSeenDateRef.current !== today;
+      lastSeenDateRef.current = today;
 
-        refreshPhase();
-        setCompleted(getCompletedPomodoros());
-        setHistoryKey((k) => k + 1);
+      refreshPhase();
+      setCompleted(getCompletedPomodoros());
+      setHistoryKey((k) => k + 1);
 
-        if (dayChanged) {
-          setCurrentFeeling(null);
-          setShowFeelingDialog(true);
-          toast(t("dayChanged.title"), {
-            description: t("dayChanged.description"),
-          });
-        }
+      if (dayChanged) {
+        setCurrentFeeling(null);
+        setShowFeelingDialog(true);
+        toast(t("dayChanged.title"), {
+          description: t("dayChanged.description"),
+        });
       }
     };
+
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") checkForDayChange();
+    };
+    const handleFocus = () => checkForDayChange();
+    const intervalId = window.setInterval(checkForDayChange, 60_000);
+
     document.addEventListener("visibilitychange", handleVisibility);
-    return () => document.removeEventListener("visibilitychange", handleVisibility);
+    window.addEventListener("focus", handleFocus);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibility);
+      window.removeEventListener("focus", handleFocus);
+      window.clearInterval(intervalId);
+    };
   }, [refreshPhase, t]);
 
   const handleComplete = useCallback(() => {

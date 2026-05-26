@@ -1,35 +1,25 @@
+## Plan: Auto-refresh al detectar cambio de día tras inactividad
 
+### Problema
+Hoy el refresh por cambio de día solo se dispara cuando el tab pasa de oculto a visible (`visibilitychange`). Si dejas la app abierta y enfocada durante horas (o la PWA queda en primer plano), al cruzar medianoche no se actualiza nada hasta que cambies de tab y vuelvas.
 
-## Plan: Deeplinks para compatibilidad con Raycast
+### Solución
+Agregar dos mecanismos extra de detección de cambio de día en `src/pages/Index.tsx`, reutilizando la lógica que ya existe en el handler actual:
 
-### Objetivo
-Agregar rutas URL que permitan acceder a acciones específicas de Fluye desde Raycast Quick Links o deeplinks.
+1. **Evento `focus` de la ventana** — cubre casos donde el usuario vuelve a la app desde otra ventana/app sin que el tab haya estado oculto (común en desktop con múltiples monitores).
+2. **Intervalo de chequeo cada 60s** — compara `toLocalDateStr()` contra `lastSeenDateRef.current`. Si cambió, ejecuta el mismo flujo de refresh (refrescar fase, pomodoros, historial, pedir feeling del día y mostrar toast).
 
-### Rutas a implementar
+### Refactor
+Extraer la lógica actual del handler de visibility a una función interna `checkForDayChange()` dentro del mismo `useEffect`, y reutilizarla desde:
+- `visibilitychange` (existente)
+- `focus` (nuevo)
+- `setInterval` cada 60s (nuevo)
 
-| Ruta | Acción |
-|------|--------|
-| `/start` | Abre la app y auto-inicia el timer |
-| `/phase` | Abre la app mostrando la fase actual |
-| `/setup` | Abre la app con el panel de configuración abierto |
-| `/feeling` | Abre la app mostrando el selector de energía |
+Limpiar correctamente listeners e intervalo en el cleanup del `useEffect`.
 
-### Cambios técnicos
+### Archivos
+- `src/pages/Index.tsx` — único cambio.
 
-1. **`src/App.tsx`** -- Agregar las nuevas rutas que rendericen `<Index />` con un prop `deeplink` indicando la acción solicitada.
-
-2. **`src/pages/Index.tsx`** -- Recibir prop `deeplink` y ejecutar la acción correspondiente en un `useEffect`:
-   - `start`: llamar `play()` automáticamente al montar
-   - `setup`: setear `showSetup(true)`
-   - `feeling`: setear `showFeelingDialog(true)`
-   - `phase`: scroll al banner de fase (comportamiento por defecto, sin acción extra)
-   - Después de ejecutar la acción, hacer `navigate("/", { replace: true })` para limpiar la URL
-
-3. **Documentación en `HelpSection`** -- Agregar una sección con las URLs disponibles para que el usuario las copie y configure en Raycast como Quick Links.
-
-### Uso en Raycast
-El usuario crea Quick Links en Raycast apuntando a:
-- `https://fluye-pomodoro.lovable.app/start`
-- `https://fluye-pomodoro.lovable.app/setup`
-- etc.
-
+### Fuera de alcance
+- No tocar storage ni lógica de pomodoros (ya se reinician solos vía `getCompletedPomodoros` al detectar fecha distinta).
+- No cambiar UI.
