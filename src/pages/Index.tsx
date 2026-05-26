@@ -1,6 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { Settings } from "lucide-react";
-import { Helmet } from "react-helmet-async";
 import { getFeeling, setFeeling, type FeelingLevel } from "@/lib/feeling";
 import FeelingSelector from "@/components/FeelingSelector";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,6 +20,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ThemeToggle from "@/components/ThemeToggle";
 import InstallPrompt from "@/components/InstallPrompt";
 import DeeplinkNotice from "@/components/DeeplinkNotice";
+import SeoHead from "@/components/SeoHead";
 import { useTimer } from "@/hooks/useTimer";
 import { getCyclePhase, getDefaultPhase, type CyclePhase } from "@/lib/cycle";
 import { getLastPeriod, getCycleLength, getCompletedPomodoros, incrementPomodoros, getMenstruates } from "@/lib/storage";
