@@ -1,0 +1,13 @@
+# Fluye
+
+> Pomodoro app que sincroniza tu productividad con tu ciclo hormonal y tu energía diaria. 100% privada, todo se guarda en tu dispositivo.
+
+Fluye combina la técnica Pomodoro (bloques de 25 minutos de enfoque + descansos de 5/15 min) con la fase del ciclo menstrual y la energía autoreportada cada día para sugerir una meta personalizada de pomodoros.
+
+## Pages
+
+- [Inicio](/): Timer Pomodoro, tareas, fase del ciclo y estadísticas semanales.
+- [Iniciar pomodoro](/start): Atajo para arrancar un bloque de enfoque de 25 minutos al instante.
+- [Tu fase actual](/phase): Resumen de la fase del ciclo y pomodoros recomendados.
+- [Configurar ciclo](/setup): Ajustes de duración del ciclo y fecha del último periodo.
+- [Energía diaria](/feeling): Registro de cómo te sientes hoy para calibrar la meta.

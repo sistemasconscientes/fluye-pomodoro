@@ -20,6 +20,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ThemeToggle from "@/components/ThemeToggle";
 import InstallPrompt from "@/components/InstallPrompt";
 import DeeplinkNotice from "@/components/DeeplinkNotice";
+import SeoHead from "@/components/SeoHead";
 import { useTimer } from "@/hooks/useTimer";
 import { getCyclePhase, getDefaultPhase, type CyclePhase } from "@/lib/cycle";
 import { getLastPeriod, getCycleLength, getCompletedPomodoros, incrementPomodoros, getMenstruates } from "@/lib/storage";
@@ -176,7 +177,8 @@ const Index = ({ deeplink }: IndexProps) => {
     : t("pomodoro.desc.default");
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-6xl flex-col px-5 py-8">
+    <main className="mx-auto flex min-h-screen max-w-6xl flex-col px-5 py-8">
+      <SeoHead deeplink={deeplink} />
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -305,7 +307,7 @@ const Index = ({ deeplink }: IndexProps) => {
           </motion.div>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 
