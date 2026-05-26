@@ -307,7 +307,7 @@ const Index = ({ deeplink }: IndexProps) => {
           </motion.div>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 

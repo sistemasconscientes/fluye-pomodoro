@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { useI18n } from "@/lib/i18n";
 
 const NotFound = () => {
@@ -11,7 +12,11 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted">
+    <main className="flex min-h-screen items-center justify-center bg-muted">
+      <Helmet>
+        <title>404 — Página no encontrada — Fluye</title>
+        <meta name="robots" content="noindex" />
+      </Helmet>
       <div className="text-center">
         <h1 className="mb-4 text-4xl font-bold">{t("notFound.title")}</h1>
         <p className="mb-4 text-xl text-muted-foreground">{t("notFound.message")}</p>
@@ -19,7 +24,7 @@ const NotFound = () => {
           {t("notFound.back")}
         </a>
       </div>
-    </div>
+    </main>
   );
 };
 
