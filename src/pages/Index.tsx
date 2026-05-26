@@ -19,6 +19,7 @@ import PomodoroCompleteDialog from "@/components/PomodoroCompleteDialog";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ThemeToggle from "@/components/ThemeToggle";
 import InstallPrompt from "@/components/InstallPrompt";
+import DeeplinkNotice from "@/components/DeeplinkNotice";
 import { useTimer } from "@/hooks/useTimer";
 import { getCyclePhase, getDefaultPhase, type CyclePhase } from "@/lib/cycle";
 import { getLastPeriod, getCycleLength, getCompletedPomodoros, incrementPomodoros, getMenstruates } from "@/lib/storage";
@@ -254,6 +255,7 @@ const Index = ({ deeplink }: IndexProps) => {
 
         {/* Right panel: Progress + Recommendations + History + Help */}
         <div className="flex flex-col gap-5">
+          <DeeplinkNotice />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <PhaseCard phase={phase} completed={completed} description={pomodoroDesc} />
             <PhaseRecommendations phase={phase} />
