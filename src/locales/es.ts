@@ -230,6 +230,17 @@ const es: Dict = {
   "install.android": "Instala Fluye para acceso rápido sin navegador",
   "install.button": "Instalar",
 
+  // Deeplink notice (Raycast / atajos)
+  "deeplink.title": "¿Los atajos abren Fluye en el navegador?",
+  "deeplink.subtitle": "Activa que los links de Fluye se abran en la app instalada.",
+  "deeplink.howTo": "Cómo activarlo",
+  "deeplink.steps.android": "Ajustes del sistema → Apps → Fluye → Abrir por defecto → activa los enlaces de fluye-pomodoro.lovable.app.",
+  "deeplink.steps.macos": "Abre Fluye desde el Launchpad → menú superior → Configuración → activa \"Abrir enlaces compatibles\".",
+  "deeplink.steps.windows": "Haz clic derecho sobre el icono de Fluye → Configuración de la app → activa \"Abrir enlaces compatibles\".",
+  "deeplink.steps.linux": "En Chrome/Edge ve a chrome://apps → clic derecho sobre Fluye → marca \"Abrir enlaces compatibles\".",
+  "deeplink.steps.other": "En tu navegador de escritorio: ve a chrome://apps (o edge://apps), clic derecho sobre Fluye y activa \"Abrir enlaces compatibles\".",
+  "common.dismiss": "Cerrar",
+
   // PiP
   "pip.toggle": "Mini timer flotante",
   "pip.noTasks": "Sin tareas pendientes",

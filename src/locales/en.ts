@@ -230,6 +230,17 @@ const en: Dict = {
   "install.android": "Install Fluye for quick access without a browser",
   "install.button": "Install",
 
+  // Deeplink notice (Raycast / shortcuts)
+  "deeplink.title": "Shortcuts opening Fluye in your browser?",
+  "deeplink.subtitle": "Enable Fluye links to open in the installed app.",
+  "deeplink.howTo": "How to enable",
+  "deeplink.steps.android": "System Settings → Apps → Fluye → Open by default → enable links for fluye-pomodoro.lovable.app.",
+  "deeplink.steps.macos": "Open Fluye from Launchpad → top menu → Settings → toggle \"Open supported links\".",
+  "deeplink.steps.windows": "Right-click the Fluye icon → App settings → enable \"Open supported links\".",
+  "deeplink.steps.linux": "In Chrome/Edge open chrome://apps → right-click Fluye → check \"Open supported links\".",
+  "deeplink.steps.other": "On desktop: open chrome://apps (or edge://apps), right-click Fluye and enable \"Open supported links\".",
+  "common.dismiss": "Dismiss",
+
   // PiP
   "pip.toggle": "Floating mini timer",
   "pip.noTasks": "No pending tasks",
