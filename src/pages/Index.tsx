@@ -177,7 +177,7 @@ const Index = ({ deeplink }: IndexProps) => {
     : t("pomodoro.desc.default");
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-6xl flex-col px-5 py-8">
+    <main className="mx-auto flex min-h-screen max-w-6xl flex-col px-5 py-8">
       <SeoHead deeplink={deeplink} />
       {/* Header */}
       <div className="flex items-center justify-between">
