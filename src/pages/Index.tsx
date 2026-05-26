@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { Settings } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 import { getFeeling, setFeeling, type FeelingLevel } from "@/lib/feeling";
 import FeelingSelector from "@/components/FeelingSelector";
 import { motion, AnimatePresence } from "framer-motion";
@@ -177,6 +178,7 @@ const Index = ({ deeplink }: IndexProps) => {
 
   return (
     <div className="mx-auto flex min-h-screen max-w-6xl flex-col px-5 py-8">
+      <SeoHead deeplink={deeplink} />
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
